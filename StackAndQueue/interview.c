@@ -6,7 +6,7 @@
 #include "SQueue.h"
 #include "QStack.h"
 #include "CheckPop.h"
-
+#include "OneArrayToTwoStack.h"
 
 
 int main()
@@ -15,7 +15,8 @@ int main()
   //  MinSrackTest();
    // SQueueTest();
 //    QStackTest();
-    CheckPopTest();
+  //  CheckPopTest();
+      HTStackTest(); 
     return 0;
 }
 
