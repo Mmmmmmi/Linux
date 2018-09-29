@@ -71,6 +71,7 @@ void PostOrderRec(BNode *root)
 }
 
 
+
 void  BinaryTreeTest()                                
 {                                                     
     TDataType preorder[] = {1, 2, 4, -1, -1, 5, -1, -1, 3, -1, 6 ,7};                         
@@ -79,13 +80,13 @@ void  BinaryTreeTest()
     Result result = {NULL, 0};
     result = CreateTree(preorder, size);
     btree = result.result;
-    printf("PreOrderRec   :");
+    printf("PreOrderRec    :");
     PreOrderRec(btree);
     printf("\n");
-    printf("InOrderRec    :");
+    printf("InOrderRec     :");
     InOrderRec(btree);
     printf("\n");
-    printf("PostOrderRec  :");
+    printf("PostOrderRec   :");
     PostOrderRec(btree);
     printf("\n");
 }                      
