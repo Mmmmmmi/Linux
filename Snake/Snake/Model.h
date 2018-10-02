@@ -37,6 +37,8 @@ typedef struct Game {
 void SnakeInitialize(Snake *psnake);               //蛇初始化
 void GenerateFood(Game *pgame);                    //食物初始化
 void GameInitialize(Game *pgame);				   //游戏初始化
-
+void SnakeAddHead(Game *pGame);
+void SnakeRemoveTail(Game *pGame);
+void SnakeTest();
 #endif // !__MODEL_H__
 
