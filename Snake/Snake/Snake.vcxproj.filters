@@ -21,6 +21,9 @@
     <ClInclude Include="View.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Controller.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Controller.c">

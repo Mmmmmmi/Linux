@@ -1,22 +1,22 @@
-
+#define _CRT_SECURE_NO_WARNINGS 1
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <stdbool.h>
 #include "Model.h"
-#include "time.h"
+#include "View.h"
 
-void SnakeInitialize(Snake *pSnake)
+void SnakeInitialize(Snake *pSnake)     
 {
     int i = 0;
     assert(pSnake != NULL);
-    pSnake->direction = RIGHT;
+    pSnake->direction = LEFT;
     pSnake->head = NULL;
 	pSnake->tail = NULL;
-     // 3,3   4,3    5,3
-    for(i = 0; i < 3; i++) {
-        int x = 3 + i;
-        int y = 3;
+     // 3,3  <- 4,3    <-5,3
+    for(i = DEFAULT_HEAD; i < DEFAULT_HEAD + 3; i++) {
+        int x = DEFAULT_HEAD + i;
+        int y = DEFAULT_HEAD;
         Node *newnode = (Node *)malloc(sizeof(Node));
         assert(newnode != NULL);
         newnode->pos.x = x;
@@ -53,38 +53,86 @@ void GenerateFood(Game *pgame)
     (pgame->food).y = y;
 }
 
-
 void GameInitialize(Game *pgame)
 {
     assert(pgame != NULL);
-    pgame->height = 27;
+    pgame->height = 28;
     pgame->width = 28;
     SnakeInitialize(&(pgame->snake));
     GenerateFood(pgame);
     pgame->speed = 300;
     pgame->score = 0;
 }
-void SnakeAddHead(Game *pGame)
+
+void SnakeAddHead(Snake *pSnake, Position *nextpos)
 {
-    assert(pGame != NULL);
+    assert(pSnake != NULL);
     Node *newnode = (Node *)malloc (sizeof(Node));
     assert(newnode != NULL);
-    newnode->pos.x = (pGame->food).x;
-    newnode->pos.y = (pGame->food).y;
+    newnode->pos.x = nextpos->x;
+    newnode->pos.y = nextpos->y;
     newnode->next = NULL;
-    pGame->snake.head->next = newnode;
-    pGame->snake.head = newnode;
+	PrintSnakeBlock(&(pSnake->head->pos), nextpos);
+    pSnake->head->next = newnode;
+    pSnake->head = newnode;
 }
 
-
-void SnakeRemoveTail(Game *pGame)
+void SnakeRemoveTail(Snake *pSnake)
 {
     Node *del = NULL;
-    assert(pGame != NULL);
-    del = pGame->snake.tail;
-    pGame->snake.tail = pGame->snake.tail->next;
-    free(del);
+    assert(pSnake != NULL);
+    del = pSnake->tail;
+	pSnake->tail = pSnake->tail->next;
+	CleanSnakeBlock(&(del->pos));
+	free(del);
     del = NULL;
+}
+
+int SnakeScoreSort(int size, int *prank)
+{
+	int i = 0, j = 0, flag = 0, ret = 0;
+	assert(prank != NULL);
+	for (i = 0; i < size - 1; i++) {
+		for (j = size - 1 - i; j > 0; j--) {
+			if (prank[j] > prank[j - 1]) {
+				int tmp = prank[j - 1];
+				prank[j - 1] = prank[j];
+				prank[j] = tmp;
+				flag = 1;
+				ret = 1;
+			}
+		}
+		if (flag == 0) {
+			break;
+		}
+	}
+	//只要进行过交换就说明有新的成绩进入排行榜
+	return ret;
+}
+
+void SnakeRankSave(int size, int *prank)
+{
+	int i = 0;
+	FILE *pf = NULL;
+	assert(prank != NULL);
+	pf = fopen("Rank.dat", "w");
+	assert(pf != NULL);
+	for (i = 0; i < size; i++) {
+		fputc(*(prank + i), pf);
+	}
+}
+
+void SnakeRankRead(int size, int *prank)
+{
+	int i = 0, k = 0;
+	assert(prank != NULL);
+	FILE *pf = NULL;
+	pf = fopen("Rank.dat", "a");
+	pf = fopen("Rank.dat", "r");
+	assert(pf != NULL);
+	while ((i < size) && ((k = fgetc(pf)) != EOF)) {
+		(*(prank + i++)) = k;
+	}
 }
 
 void SnakeTest()

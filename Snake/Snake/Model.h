@@ -1,6 +1,9 @@
 #ifndef __MODEL_H__
 #define __MODEL_H__
 
+
+#define DEFAULT_HEAD 8
+#define DEFAULT_RANKNUM 10
 typedef enum Direction{
 	UP, DOWN, LEFT, RIGHT
 }Direction;
@@ -22,6 +25,7 @@ typedef struct Snake{
 	Direction direction;
 }Snake;
 
+
 typedef struct Game {
 	Snake snake;        //蛇
     //由于蛇目前只会增长,所以为了减少时间复杂度,
@@ -34,11 +38,14 @@ typedef struct Game {
 }Game;
 
 
-void SnakeInitialize(Snake *psnake);               //蛇初始化
-void GenerateFood(Game *pgame);                    //食物初始化
-void GameInitialize(Game *pgame);				   //游戏初始化
-void SnakeAddHead(Game *pGame);
-void SnakeRemoveTail(Game *pGame);
-void SnakeTest();
+void SnakeInitialize(Snake *psnake);						//蛇初始化
+void GenerateFood(Game *pgame);								//食物初始化
+void GameInitialize(Game *pgame);							//游戏初始化
+void SnakeAddHead(Snake *pSnake, Position *nextpos);		//蛇增加头
+void SnakeRemoveTail(Snake *pSnake);						//蛇删除尾
+void SnakeRankSave(int size, int *prank);					//保存排行榜
+void SnakeRankRead(int size, int *prank);					//读取排行榜
+int SnakeScoreSort(int size, int *prank);					//对排行榜重新排序
+void SnakeTest();											//测试
 #endif // !__MODEL_H__
 
