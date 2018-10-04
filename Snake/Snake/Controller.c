@@ -134,8 +134,8 @@ void RunGame()
 		if (IsEat(&(game.food), &nextpos)) {
 			//吃到食物 尾巴不变 头变长一个  重新生成食物  分数增加
 			GenerateFood(&game);
-			if (game.speed > 80) {
-				game.speed -= 5;
+			if (game.snake.speed > 80) {
+				game.snake.speed -= 5;
 			}
 			game.score += 10;
 		}
@@ -153,7 +153,7 @@ void RunGame()
 			Sleep(50);
 		}
 		else {
-			Sleep(game.speed);
+			Sleep(game.snake.speed);
 		}
 
 	}

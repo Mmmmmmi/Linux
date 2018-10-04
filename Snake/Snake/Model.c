@@ -11,6 +11,7 @@ void SnakeInitialize(Snake *pSnake)
     int i = 0;
     assert(pSnake != NULL);
     pSnake->direction = LEFT;
+	pSnake->speed = 300;
     pSnake->head = NULL;
 	pSnake->tail = NULL;
      // 3,3  <- 4,3    <-5,3
@@ -60,7 +61,6 @@ void GameInitialize(Game *pgame)
     pgame->width = 28;
     SnakeInitialize(&(pgame->snake));
     GenerateFood(pgame);
-    pgame->speed = 300;
     pgame->score = 0;
 }
 

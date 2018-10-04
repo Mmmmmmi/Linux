@@ -22,6 +22,7 @@ typedef struct Node{
 typedef struct Snake{
 	Node *head;
 	Node *tail;
+	int speed;
 	Direction direction;
 }Snake;
 
@@ -33,7 +34,6 @@ typedef struct Game {
 	Position food;      //食物坐标
 	int width;          //宽
 	int height;         //高
-    int speed;          //速度
     int score;          //分数
 }Game;
 
