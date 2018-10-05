@@ -6,7 +6,7 @@
 #include "Model.h"
 #include "View.h"
 
-static Position GetNextPos(const Snake *pSnake)						//获取蛇下一步要走的坐标
+static Position GetNextPos(const Snake *pSnake)			//获取新的蛇头的位置
 {
 	assert(pSnake != NULL);
 	Position nextpos = pSnake->head->pos;

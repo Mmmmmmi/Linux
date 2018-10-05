@@ -24,7 +24,7 @@ static void NewCurPos(int X, int Y)
 	SetCurPos(X, Y);
 }
 
-void ViewInit(int width, int height)
+static void ViewInit(int width, int height)
 {
 	HANDLE hStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO info;
@@ -42,14 +42,12 @@ void PrintStart0(int width, int height)
 
 void PrintStart1(int width, int height)
 {
-	ViewInit(width, height);
 	NewCurPos(width / 4, height / 2);
 	printf("                            ");
 }
 
 void PrintEnd(int width, int height)
 {
-	ViewInit(width, height);
 	NewCurPos(width / 3, height / 2);
 	printf("GAME OVER£¡");
 	NewCurPos(width + 2, height);

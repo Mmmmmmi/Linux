@@ -48,6 +48,5 @@ void SnakeRemoveTail(Snake *pSnake);						//蛇删除尾
 void SnakeRankSave(int size, int *prank);					//保存排行榜
 void SnakeRankRead(int size, int *prank);					//读取排行榜
 int SnakeScoreSort(int size, int *prank);					//对排行榜重新排序
-void SnakeTest();											//测试
 #endif // !__MODEL_H__
 

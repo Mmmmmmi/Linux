@@ -14,7 +14,9 @@ void SnakeInitialize(Snake *pSnake)
 	pSnake->speed = 300;
     pSnake->head = NULL;
 	pSnake->tail = NULL;
-     // 3,3  <- 4,3    <-5,3
+			//链表		    	尾						头
+	// 这里给出的蛇坐标为 ： （8，8） <- （9， 8） <-（10， 8）
+			//pSnake           head 				   tail
     for(i = DEFAULT_HEAD; i < DEFAULT_HEAD + 3; i++) {
         int x = DEFAULT_HEAD + i;
         int y = DEFAULT_HEAD;
@@ -161,10 +163,4 @@ void SnakeRankRead(int size, int *prank)
 	}
 }
 
-void SnakeTest()
-{
-    Game game;
-    GameInitialize(&game);
-    printf("%d, %d\n", game.food.x, game.food.y);
-}
 
