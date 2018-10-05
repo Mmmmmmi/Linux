@@ -39,8 +39,10 @@ typedef struct Game {
 
 
 void SnakeInitialize(Snake *psnake);						//蛇初始化
+void SnakeDestroy(Snake *pSnake);							//蛇销毁
 void GenerateFood(Game *pgame);								//食物初始化
 void GameInitialize(Game *pgame);							//游戏初始化
+void GameDestroy(Game *pGame);								//游戏销毁
 void SnakeAddHead(Snake *pSnake, Position *nextpos);		//蛇增加头
 void SnakeRemoveTail(Snake *pSnake);						//蛇删除尾
 void SnakeRankSave(int size, int *prank);					//保存排行榜

@@ -30,6 +30,21 @@ void SnakeInitialize(Snake *pSnake)
     }
 }
 
+void SnakeDestroy(Snake *pSnake)
+{
+	Node *del, *cur = NULL;
+	assert(pSnake != NULL);
+	for (cur = pSnake->tail; cur != NULL;) {
+		del = cur;
+		cur = cur->next;
+		free(del);
+	}
+	pSnake->head = NULL;
+	pSnake->tail = NULL;
+	pSnake->speed = 0;
+
+}
+
 static bool IsInSnake(int x, int y, Snake *pSnake)
 {
     Node *cur = NULL;
@@ -62,6 +77,17 @@ void GameInitialize(Game *pgame)
     SnakeInitialize(&(pgame->snake));
     GenerateFood(pgame);
     pgame->score = 0;
+}
+
+void GameDestroy(Game *pGame)
+{
+	assert(pGame != NULL);
+	SnakeDestroy(&(pGame->snake));
+	pGame->width = 0;
+	pGame->height = 0;
+	pGame->food.x = 0;
+	pGame->food.y = 0;
+	pGame->score = 0;
 }
 
 void SnakeAddHead(Snake *pSnake, Position *nextpos)

@@ -165,13 +165,13 @@ void RunGame()
 	PrintRank(game.width, game.height, DEFAULT_RANKNUM, prank);
 	PrintEnd(game.width, game.height);
 	Pause();
+	GameDestroy(&game);
 }
 
 int main()
 {
     srand((unsigned)time(NULL));
 	RunGame();
-
 	return 0;
 }
 
