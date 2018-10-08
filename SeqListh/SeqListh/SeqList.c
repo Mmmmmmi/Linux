@@ -230,7 +230,7 @@ bool SeqListFull(const pSeqList ps)
 void InitSeqList(pSeqList ps)
 {
 	assert(ps);
-	ps->data = (DataType *)malloc(DEFAULT_SZ * sizeof(DataType));
+	ps->data = (DataType *)malloc(DEFAULT_CAPACITY * sizeof(DataType));
 	if (ps->data == NULL) {
 		perror("error foe Initialize");
 		exit(EXIT_FAILURE);
