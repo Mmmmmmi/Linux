@@ -236,7 +236,7 @@ void InitSeqList(pSeqList ps)
 		exit(EXIT_FAILURE);
 	}
 	ps->sz = 0;
-	ps->capacity = DEFAULT_SZ;
+	ps->capacity = DEFAULT_CAPACITY;
 	
 }
 
