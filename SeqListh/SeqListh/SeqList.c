@@ -230,7 +230,7 @@ bool SeqListFull(const pSeqList ps)
 void InitSeqList(pSeqList ps)
 {
 	assert(ps);
-	ps->data = (DataType *)malloc(DEFAULT_SZ * sizeof(DataType));
+	ps->data = (DataType *)malloc(DEFAULT_CAPACITY * sizeof(DataType));
 	if (ps->data == NULL) {
 		perror("error foe Initialize");
 		exit(EXIT_FAILURE);
@@ -285,6 +285,9 @@ void PrintSeqList(const pSeqList ps)
 
 void PopBack(pSeqList ps)
 {
+	if (ps->sz == 0) {
+		return;
+	}
 	ps->sz--;
 }
 
@@ -304,6 +307,9 @@ void PopFront(pSeqList ps)
 {
 	int i = 0;
 	assert(ps != NULL);
+	if (ps->sz == 0) {
+		return;
+	}
 	for (i = 0; i < ps->sz - 1; i++) {
 		ps->data[i] = ps->data[i + 1];
 	}
@@ -398,8 +404,10 @@ void Remove(pSeqList ps, DataType d)
 
 void RemoveALL(pSeqList ps, DataType d)
 {
-	int i = 0, j = 0;
-	for (i = 0, j = 0; i < ps->sz; i++) {
+	int i = 0;
+	int j = 0;
+	assert(ps != NULL);
+	for (i = 0; i < ps->sz; i++) {
 		if (ps->data[i] != d) {
 			ps->data[j] = ps->data[i];
 			j++;
@@ -407,6 +415,7 @@ void RemoveALL(pSeqList ps, DataType d)
 	}
 	ps->sz = j;
 }
+
 
 int SeqList_Size(const pSeqList ps)
 {
@@ -447,9 +456,9 @@ void test()
 	PrintSeqList(&seqlist);
 
 
-	n = 1;
-	DataInsert(&seqlist, 999, 555);
-	PrintSeqList(&seqlist);
+	//n = 1;
+	//DataInsert(&seqlist, 999, 555);
+	//PrintSeqList(&seqlist);
 
 	//Sort(&seqlist);
 	//printf("\nSort: ");

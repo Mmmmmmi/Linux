@@ -3,31 +3,33 @@
 
 #include <stdbool.h>
 
-#define DEFAULT_CAPACITY 3 
-#define DEFAULT_ADD 2 
+
 
 typedef int DataType;
 
-//////动态顺序表
-////#define Dynamic_List
-////typedef struct SeqList
-////{
-////    DataType *data;//数据区 
-////    int sz;//有效个数 
-////    int capacity;//容量 
-////}SeqList, *pSeqList;
-//}
+////动态顺序表
+#define Dynamic_List
+
+#define DEFAULT_CAPACITY 3 
+#define DEFAULT_ADD 2 
+
+typedef struct SeqList
+{
+	DataType *data;//数据区 
+	int sz;//有效个数 
+	int capacity;//容量 
+}SeqList, *pSeqList;
 
 
-//静态顺序表 
-#define static_List
-
-#define MAX 100
-typedef struct SeqList 
-{ 
-	DataType data[MAX]; 
-	int sz; 
-}SeqList, *pSeqList; 
+////静态顺序表 
+//#define static_List
+//
+//#define MAX 100
+//typedef struct SeqList 
+//{ 
+//	DataType data[MAX]; 
+//	int sz; 
+//}SeqList, *pSeqList; 
 
 
 
