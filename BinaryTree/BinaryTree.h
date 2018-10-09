@@ -16,6 +16,7 @@ typedef struct Result {
 }Result;
 
 
+
 Result CreateTree(TDataType preorder[], int size);  //创建树
 void PreOrderRec(BNode *root);          //先序遍历
 void BinaryTreeTest();     //测试
