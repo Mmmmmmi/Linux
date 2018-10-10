@@ -98,6 +98,11 @@ void Queue_Pop(Queue *pqueue)
 
 }
 
+int Queue_Empty(const Queue *pqueue)
+{
+    return pqueue->front == NULL && pqueue->rear == NULL;
+}
+
 unsigned Queue_Size(const Queue *pqueue)
 {
 	Node *cur = NULL;
