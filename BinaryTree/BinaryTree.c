@@ -68,6 +68,36 @@ void PostOrderRec(BNode *root)
     printf("%d ", root->data);
 }
 
+void PreOrderLoop(BNode *root)
+{
+    if (root == NULL) {
+        return;
+    }    
+    printf("%d ", root->data);
+    PreOrderRec(root->left);
+    PreOrderRec(root->right);
+}
+
+void InOrderLoop(BNode *root)
+{
+    if (root == NULL) {
+       return; 
+    }
+    InOrderRec(root->left);
+    printf("%d ", root->data);
+    InOrderRec(root->right);
+}
+
+void PostOrderLoop(BNode *root) 
+{
+    if (root == NULL) {
+        return;
+    }
+    PostOrderRec(root->left);
+    PostOrderRec(root->right);
+    printf("%d ", root->data);
+}
+
 int GetBTNodeSize(BNode *root)
 {
     if (root == NULL) {
