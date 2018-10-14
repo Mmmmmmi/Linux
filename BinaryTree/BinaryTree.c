@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "BinaryTree.h"
 #include "Queue.h"
-
+#include "Stack.h"
                                                       
 BNode* CreateNode(TDataType data)              
 {                                                     
@@ -68,6 +68,7 @@ void PostOrderRec(BNode *root)
     printf("%d ", root->data);
 }
 
+<<<<<<< HEAD
 void PreOrderLoop(BNode *root)
 {
     if (root == NULL) {
@@ -76,16 +77,48 @@ void PreOrderLoop(BNode *root)
     printf("%d ", root->data);
     PreOrderRec(root->left);
     PreOrderRec(root->right);
+=======
+
+void PreOrderLoop(BNode *root)
+{
+    Stack stack;
+    BNode *cur = NULL;
+    BNode *top = NULL;
+    Stack_Initialize(&stack);
+    if (root == NULL) {
+        return;
+    }
+
+    cur = root;
+    while(!Stack_Empty(&stack) || cur != NULL) {
+        while (cur != NULL) {
+            Stack_Push(&stack, cur);
+            printf("%d ", cur->data);
+            cur = cur->left;
+        }
+        top = Stack_Top(&stack);
+        Stack_Pop(&stack);
+        cur = top->right;
+    }
+>>>>>>> 341c72b0343b37dd75312c0dd0c495a69a1bfc77
 }
 
 void InOrderLoop(BNode *root)
 {
+<<<<<<< HEAD
     if (root == NULL) {
        return; 
     }
     InOrderRec(root->left);
     printf("%d ", root->data);
     InOrderRec(root->right);
+=======
+    BNode *cur = NULL;
+    BNode *top = NULL;
+    if (root == NULL) {
+       return; 
+    }
+>>>>>>> 341c72b0343b37dd75312c0dd0c495a69a1bfc77
 }
 
 void PostOrderLoop(BNode *root) 
@@ -223,24 +256,27 @@ void  BinaryTreeTest()
     printf("PreOrderRec          :");
     PreOrderRec(btree);
     printf("\n");
+    printf("PreOrderLoop         :");
+    PreOrderLoop(btree);
+    printf("\n");
     printf("InOrderRec           :");
     InOrderRec(btree);
     printf("\n");
     printf("PostOrderRec         :");
     PostOrderRec(btree);
     printf("\n");
-    printf("GetBTNodeSize        :%d \n", GetBTNodeSize(btree));
-    printf("GetBTNodeLeafSize    :%d \n", GetBTNodeLeafSize(btree));
-    key = 3;   
-    printf("GetKLevelSize  %d     :%d \n", key, GetKLevelSize(btree, key));
-    printf("GetBTNodeHeight      :%d \n", GetBTNodeHeight(btree));
-    key = 8;
-    printf("SearchBTNode   %d     :%p \n", key, SearchBTNode(btree, key));
-    printf("LevelOrder           :");
-    LevelOrder(btree); 
-    printf("\n");
-    printf("IsCompleteTree       :");
-    IsCompleteTree(btree);
-    printf("\n");
+//    printf("GetBTNodeSize        :%d \n", GetBTNodeSize(btree));
+//    printf("GetBTNodeLeafSize    :%d \n", GetBTNodeLeafSize(btree));
+//    key = 3;   
+//    printf("GetKLevelSize  %d     :%d \n", key, GetKLevelSize(btree, key));
+//    printf("GetBTNodeHeight      :%d \n", GetBTNodeHeight(btree));
+//    key = 8;
+//    printf("SearchBTNode   %d     :%p \n", key, SearchBTNode(btree, key));
+//    printf("LevelOrder           :");
+//    LevelOrder(btree); 
+//    printf("\n");
+//    printf("IsCompleteTree       :");
+//    IsCompleteTree(btree);
+//    printf("\n");
 }                      
 
