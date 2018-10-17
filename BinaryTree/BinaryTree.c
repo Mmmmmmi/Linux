@@ -68,7 +68,6 @@ void PostOrderRec(BNode *root)
     printf("%d ", root->data);
 }
 
-<<<<<<< HEAD
 void PreOrderLoop(BNode *root)
 {
     if (root == NULL) {
@@ -77,7 +76,7 @@ void PreOrderLoop(BNode *root)
     printf("%d ", root->data);
     PreOrderRec(root->left);
     PreOrderRec(root->right);
-=======
+}
 
 void PreOrderLoop(BNode *root)
 {
@@ -100,25 +99,21 @@ void PreOrderLoop(BNode *root)
         Stack_Pop(&stack);
         cur = top->right;
     }
->>>>>>> 341c72b0343b37dd75312c0dd0c495a69a1bfc77
 }
 
 void InOrderLoop(BNode *root)
 {
-<<<<<<< HEAD
     if (root == NULL) {
        return; 
     }
     InOrderRec(root->left);
     printf("%d ", root->data);
     InOrderRec(root->right);
-=======
     BNode *cur = NULL;
     BNode *top = NULL;
     if (root == NULL) {
        return; 
     }
->>>>>>> 341c72b0343b37dd75312c0dd0c495a69a1bfc77
 }
 
 void PostOrderLoop(BNode *root) 
