@@ -8,7 +8,7 @@
 
 
 
-void Stack_Initialize(Stack *pStack)
+void StackInitialize(Stack *pStack)
 {
 	assert(pStack);
 	pStack->base = (DataType *)malloc((sizeof(DataType) * DEFAULT_CAPACITY));
@@ -19,7 +19,7 @@ void Stack_Initialize(Stack *pStack)
 	pStack->capacity = DEFAULT_CAPACITY;
 	pStack->top = 0;
 }
-void Stack_Push(Stack *pStack, DataType data)
+void StackPush(Stack *pStack, DataType data)
 {
 	DataType *tmp = NULL;
 	assert(pStack);
@@ -38,20 +38,20 @@ void Stack_Push(Stack *pStack, DataType data)
 	pStack->top++;
 	pStack->capacity += ADD_CAPACITY;
 }
-DataType Stack_Top(const Stack *pStack)
+DataType StackTop(const Stack *pStack)
 {
 	assert(pStack != NULL);
 	if (pStack->top == 0) {
-		printf("Õ»Îª¿Õ£¬²é¿´Ê§°Ü£¡\n");
+		printf("Stack Is Empty , Failure!\n");
 		exit(EXIT_FAILURE);
 	}
 	return pStack->base[pStack->top - 1];
 }
-unsigned Stack_Size(Stack *pStack)
+unsigned StackSize(Stack *pStack)
 {
 	return (unsigned)pStack->top;
 }
-void Stack_Pop(Stack *pStack)
+void StackPop(Stack *pStack)
 {
 	assert(pStack != NULL);
 	if (pStack->top == 0) {
@@ -61,17 +61,17 @@ void Stack_Pop(Stack *pStack)
 	//pStack->base[pStack->top - 1] = 0;
 	pStack->top--;
 }
-int Stack_Full(const Stack *pStack)
+int StackFull(const Stack *pStack)
 {
 	assert(pStack);
 	return pStack->top == pStack->capacity;
 }
-int Stack_Empty(const Stack *pStack)
+int StackEmpty(const Stack *pStack)
 {
 	assert(pStack);
 	return pStack->top == 0;
 }
-void Stack_Copy(Stack *pStackDest, const Stack *pStackSrc)
+void StackCopy(Stack *pStackDest, const Stack *pStackSrc)
 {
 	DataType *tmp = NULL;
 	assert(pStackDest != NULL);
@@ -89,7 +89,7 @@ void Stack_Copy(Stack *pStackDest, const Stack *pStackSrc)
 
 
 }
-void Stack_Destroy(Stack *pStack)
+void StackDestroy(Stack *pStack)
 {
 	assert(pStack);
 	assert(pStack->base);
@@ -104,30 +104,30 @@ void test()
 	Stack stack = { NULL, 0 };
 	Stack stack1 = { NULL, 0 };
 
-	Stack_Initialize(&stack);
-	Stack_Push(&stack, 3);
-	Stack_Push(&stack, 2);
-	Stack_Push(&stack, 1);
-	Stack_Push(&stack, 0);
-	//Stack_Copy(&stack1, &stack);
-	//printf("stack:\n");
-	//printf("%d\n", Stack_Top(&stack));
-	//Stack_Pop(&stack);
-	//printf("%d\n", Stack_Top(&stack));
-	//Stack_Pop(&stack);
-	//printf("%d\n", Stack_Top(&stack));
-	//Stack_Pop(&stack);
-	//printf("%d\n", Stack_Top(&stack));
-	//Stack_Pop(&stack);
-	//printf("stack1:\n");
-	//printf("%d\n", Stack_Top(&stack1));
-	//Stack_Pop(&stack1);
-	//printf("%d\n", Stack_Top(&stack1));
-	//Stack_Pop(&stack1);
-	//printf("%d\n", Stack_Top(&stack1));
-	//Stack_Pop(&stack1);
-	//printf("%d\n", Stack_Top(&stack1));
-	//Stack_Pop(&stack1);
-	Stack_Destroy(&stack);
-	//Stack_Destroy(&stack1);
+	StackInitialize(&stack);
+	StackPush(&stack, 3);
+	StackPush(&stack, 2);
+	StackPush(&stack, 1);
+	StackPush(&stack, 0);
+	StackCopy(&stack1, &stack);
+	printf("stack:\n");
+	printf("%d\n", StackTop(&stack));
+	StackPop(&stack);
+	printf("%d\n", StackTop(&stack));
+	StackPop(&stack);
+	printf("%d\n", StackTop(&stack));
+	StackPop(&stack);
+	printf("%d\n", StackTop(&stack));
+	StackPop(&stack);
+	printf("stack1:\n");
+	printf("%d\n", StackTop(&stack1));
+	StackPop(&stack1);
+	printf("%d\n", StackTop(&stack1));
+	StackPop(&stack1);
+	printf("%d\n", StackTop(&stack1));
+	StackPop(&stack1);
+	printf("%d\n", StackTop(&stack1));
+	StackPop(&stack1);
+	StackDestroy(&stack);
+	StackDestroy(&stack1);
 }
