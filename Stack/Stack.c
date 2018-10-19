@@ -55,10 +55,9 @@ void StackPop(Stack *pStack)
 {
 	assert(pStack != NULL);
 	if (pStack->top == 0) {
-		printf("Õ»Îª¿Õ£¬³öÕ»Ê§°Ü£¡\n");
+		printf("Stack Is Empty , Failure!\n");
 		return;
 	}
-	//pStack->base[pStack->top - 1] = 0;
 	pStack->top--;
 }
 int StackFull(const Stack *pStack)
