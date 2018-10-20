@@ -6,14 +6,14 @@
 
 
 
-void Queue_Initialize(Queue *pqueue)
+void QueueInitialize(Queue *pqueue)
 {
 	assert(pqueue != NULL);
 	pqueue->front = NULL;
 	pqueue->rear = NULL;
 }
 
-void Queue_Destroy(Queue *pqueue)
+void QueueDestroy(Queue *pqueue)
 {
 	Node *del = NULL;
 	Node *cur = NULL;
@@ -31,7 +31,7 @@ void Queue_Destroy(Queue *pqueue)
 	pqueue->front = NULL;
 	pqueue->rear = NULL;
 }
-Node * Creat_Node(DataType data)
+Node * CreatNode(DataType data)
 {
 	Node *NewNode = (Node*)malloc(sizeof(Node));
 	if (NewNode == NULL) {
@@ -42,7 +42,7 @@ Node * Creat_Node(DataType data)
 	NewNode->next = NULL;
 	return NewNode;
 }
-void Queue_Push(Queue *pqueue, DataType data)
+void QueuePush(Queue *pqueue, DataType data)
 {
 	Node *cur = NULL;
 	assert(pqueue);
@@ -59,7 +59,7 @@ void Queue_Push(Queue *pqueue, DataType data)
 	cur->next = Creat_Node(data);
 	pqueue->rear = cur->next;
 }
-DataType Queue_Top(const Queue *pqueue)
+DataType QueueTop(const Queue *pqueue)
 {
 	assert(pqueue);
 	if (pqueue->front == NULL) {
@@ -69,7 +69,7 @@ DataType Queue_Top(const Queue *pqueue)
 	return pqueue->front->data;
 }
 
-void Queue_Pop(Queue *pqueue)
+void QueuePop(Queue *pqueue)
 {
 	Node *del = NULL;
 	assert(pqueue);
@@ -98,12 +98,12 @@ void Queue_Pop(Queue *pqueue)
 
 }
 
-int Queue_Empty(const Queue *pqueue)
+int QueueEmpty(const Queue *pqueue)
 {
     return pqueue->front == NULL && pqueue->rear == NULL;
 }
 
-unsigned Queue_Size(const Queue *pqueue)
+unsigned QueueSize(const Queue *pqueue)
 {
 	Node *cur = NULL;
 	size_t size = 0;
@@ -119,28 +119,27 @@ unsigned Queue_Size(const Queue *pqueue)
 void test()
 {
 	Queue queue;
-	Queue_Initialize(&queue);
-	Queue_Push(&queue, 1);
-	Queue_Push(&queue, 2);
-	Queue_Push(&queue, 3);
-	Queue_Push(&queue, 4);
-	Queue_Push(&queue, 5);
-	Queue_Push(&queue, 6);
-	printf("Queue_Size = %d    \n", Queue_Size(&queue));
-	//printf("%d    ", Queue_Top(&queue));
-	//Queue_Pop(&queue);
-	//printf("%d    ", Queue_Top(&queue));
-	//Queue_Pop(&queue);
-	//printf("%d    ", Queue_Top(&queue));
-	//Queue_Pop(&queue);
-	//printf("%d    ", Queue_Top(&queue));
-	//Queue_Pop(&queue);
-	//printf("%d    ", Queue_Top(&queue));
-	//Queue_Pop(&queue);
-	//printf("%d    ", Queue_Top(&queue));
-	//Queue_Pop(&queue);
-	//printf("\nQueue_Size = %d    \n", Queue_Size(&queue));
-	Queue_Destroy(&queue);
-	printf("\nQueue_Size = %d    \n", Queue_Size(&queue));
+	QueueInitialize(&queue);
+	QueuePush(&queue, 1);
+	QueuePush(&queue, 2);
+	QueuePush(&queue, 3);
+	QueuePush(&queue, 4);
+	QueuePush(&queue, 5);
+	QueuePush(&queue, 6);
+	printf("QueueSize = %d    \n", QueueSize(&queue));
+	//printf("%d    ", QueueTop(&queue));
+	//QueuePop(&queue);
+	//printf("%d    ", QueueTop(&queue));
+	//QueuePop(&queue);
+	//printf("%d    ", QueueTop(&queue));
+	//QueuePop(&queue);
+	//printf("%d    ", QueueTop(&queue));
+	//QueuePop(&queue);
+	//printf("%d    ", QueueTop(&queue));
+	//QueuePop(&queue);
+	//printf("%d    ", QueueTop(&queue));
+	//QueuePop(&queue);
+	//printf("\nQueueSize = %d    \n", QueueSize(&queue));
+	QueueDestroy(&queue);
 
 }
