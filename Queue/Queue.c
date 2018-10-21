@@ -48,7 +48,7 @@ void QueuePush(Queue *pqueue, DataType data)
 	assert(pqueue);
 	if (pqueue->front == NULL)
 	{
-		pqueue->front = Creat_Node(data);
+		pqueue->front = CreatNode(data);
 		pqueue->rear = pqueue->front;
 		return;
 	}
@@ -56,7 +56,7 @@ void QueuePush(Queue *pqueue, DataType data)
 	while (cur->next != NULL) {
 		cur = cur->next;
 	}
-	cur->next = Creat_Node(data);
+	cur->next = CreatNode(data);
 	pqueue->rear = cur->next;
 }
 DataType QueueTop(const Queue *pqueue)
