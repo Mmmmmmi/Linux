@@ -106,6 +106,23 @@ int Partition_02(int array[], int left, int right)
     return begin;
 }
 
+int Partition_03(int array[], int left, int right)
+{
+    int i = left, j = left;            // i 是大于基准的最左边  j 是小于基准的最右边
+    while(i < right) {
+        if (array[i] < array[right]) {
+            if (i != j) {                                           //i,j 指向同一个 不用交换
+                Swap(array + i, array + j);
+                j++;
+            }
+        }
+        i++;
+    }
+    Swap(array + j + 1, array + right);
+    return j;
+}
+
+
 void Print(int array[], int size)
 {
     for (int i = 0; i < size; i++) {
@@ -120,7 +137,7 @@ int main()
     int array[] = {2, 6, 5, 3, 4, 1, 0, 8, 9, 7};
     int size = sizeof(array) / sizeof(array[0]);
     Print(array, size);
-    Partition_02(array, 0, size - 1);
+    Partition_03(array, 0, size - 1);
     Print(array, size);
     return 0;
 }
