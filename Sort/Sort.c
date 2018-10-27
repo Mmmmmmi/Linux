@@ -87,6 +87,23 @@ void BubbleSort(int array[], int size)
     }
 }
 
+int Partition_01(int array[], int left, int right)
+{
+    int start = left;
+    int end = right - 1;
+    while(start < end) {
+        while(start < end && array[start] <= array[right]) {
+            start++;
+        }
+        while(start < end && array[end] >= array[right]) {
+            end--;
+        }
+        Swap(array + start, array + end);
+    }
+    Swap(array + end, array + right);
+    return start;
+}
+
 int Partition_02(int array[], int left, int right)
 {
     int begin = left;
@@ -121,7 +138,22 @@ int Partition_03(int array[], int left, int right)
     Swap(array + j + 1, array + right);
     return j;
 }
+void Print(int array[], int size);
+void QuickSort(int array[], int size)
+{
+    printf("size = %d\n", size);
+    int left = 0;
+    int right = size - 1;
+    int i = Partition_01(array, left, right);
+    if (i == 0) {
+        return;
+    }
+    Print(array, size);
+    QuickSort(array, i);
+    Print(array, size);
+    QuickSort(array + i + 1, size - i - 1);
 
+}
 
 void Print(int array[], int size)
 {
@@ -134,10 +166,10 @@ void Print(int array[], int size)
 
 int main()
 {
-    int array[] = {2, 6, 5, 3, 4, 1, 0, 8, 9, 7};
+    int array[] = {2, 6, 4, 3, 7, 1, 0, 8, 9, 5};
     int size = sizeof(array) / sizeof(array[0]);
     Print(array, size);
-    Partition_03(array, 0, size - 1);
+    QuickSort(array, size);
     Print(array, size);
     return 0;
 }
