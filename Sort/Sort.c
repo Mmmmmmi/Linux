@@ -141,18 +141,18 @@ int Partition_03(int array[], int left, int right)
 void Print(int array[], int size);
 void QuickSort(int array[], int size)
 {
-    printf("size = %d\n", size);
+    printf("未排:");
+    Print(array, size);
     int left = 0;
     int right = size - 1;
     int i = Partition_01(array, left, right);
     if (i == 0) {
         return;
     }
+    printf("已排:");
     Print(array, size);
     QuickSort(array, i);
-    Print(array, size);
     QuickSort(array + i + 1, size - i - 1);
-
 }
 
 void Print(int array[], int size)
@@ -173,4 +173,3 @@ int main()
     Print(array, size);
     return 0;
 }
-
