@@ -125,9 +125,21 @@ int Partition_02(int array[], int left, int right)
 
 int Partition_03(int array[], int left, int right)
 {
-    
+    int less = left;       //第一个大于基准的 最后与基准进行交换 并返回
+    int great = left;      //大于基准的最右边
+    while (great < right) {
+        if (array[great] < array[right]) {
+                Swap(array + less, array + great);
+                less++;     //多了一个小于的 往前走一步
+ //               printf("less == %d", less);
+        }
+        great++;
+    }
+    Swap(array + less, array + right);
+    return less;    //指向的是基准
 }
-void Print(int array[], int size);
+
+#if 0
 void QuickSort(int array[], int size)             //数组的首地址和数组的元素的个数
 {
     int left = 0;
@@ -135,15 +147,29 @@ void QuickSort(int array[], int size)             //数组的首地址和数组�
     if (size <= 1) {    //当个数小于等于一个的时候，不继续排序
         return;
     }
-    printf("未：");
-    Print(array, size);
-    int i = Partition_02(array, left, right);
-    printf("已：");
-    Print(array, size);
-    printf("i == %d\n", i);
+  //  printf("未：");
+  //  Print(array, size);
+    int i = Partition_03(array, left, right);
+  //  printf("已：");
+ //   Print(array, size);
+//    printf("i == %d\n", i);
     QuickSort(array, i);        
     QuickSort(array + i + 1, size - i - 1);
 }
+
+#else 
+
+void QuickSort(int array[], int left, int right) {
+    if (left >= right) {
+        return;
+    }
+    int i = Partition_01(array, left , right);
+    QuickSort(array, left, i - 1);
+    QuickSort(array, i + 1, right);
+
+}
+
+#endif 
 
 void Print(int array[], int size)
 {
@@ -159,7 +185,8 @@ int main()
     int array[] = {2, 6, 4, 3, 7, 1, 0, 8, 9, 5};
     int size = sizeof(array) / sizeof(array[0]);
     Print(array, size);
-    QuickSort(array, size);
+  //  QuickSort(array, size);
+    QuickSort(array, 0, size - 1);
     Print(array, size);
     return 0;
 }
