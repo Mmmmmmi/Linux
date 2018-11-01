@@ -7,7 +7,24 @@ void Swap(int *a, int *b)
     *b = tmp;
 }
 
-void SelectSort(int array[], int size)
+void Print(int array[], int size);
+void SelectSort_0(int array[], int size) {
+    int max = 0;         //用来保存本次求出的最大值的下标
+    int i = 0;
+    int j = 0;
+    for (i = 0; i < size - 1; i++) {
+        max = 0;
+        for (j = 0; j < size - 1 - i; j++) {
+            if (array[j + 1] > array[max]) {
+                max = j + 1;
+            }
+        }
+        if (max != j) {
+        Swap(array + max, array + j);
+        }
+    }
+}
+void SelectSort_1(int array[], int size)
 {
     int min = 0;
     int max = 0;
@@ -186,7 +203,7 @@ int main()
     int size = sizeof(array) / sizeof(array[0]);
     Print(array, size);
   //  QuickSort(array, size);
-    QuickSort(array, 0, size - 1);
+    SelectSort_0(array, size);
     Print(array, size);
     return 0;
 }
