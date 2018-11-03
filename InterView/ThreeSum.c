@@ -9,8 +9,11 @@ int** threeSum(int* nums, int numsSize, int* returnSize)
 {
     int **ret = NULL;
     int **rettmp = NULL;
-    int cur = 0;
     int i = 0;
+    int cur = 0;
+    int next = 0;
+    int jmp = 0;
+    int cursum = 0;
     int retnum = 0;
     if (nums == NULL || numsSize == 0) {
         returnSize = NULL;
@@ -22,13 +25,23 @@ int** threeSum(int* nums, int numsSize, int* returnSize)
         return NULL;
     }
     while (cur < numsSize - 2) {
-        if (nums[cur] + nums[cur + 1] + nums[cur + 2] == 0) {                //如果满足条件就存储起来
-            (rettmp[i]) = (int *) malloc (sizeof(int) * 3);
-            (rettmp[i])[0] = nums[cur];
-            (rettmp[i])[1] = nums[cur + 1];
-            (rettmp[i])[2] = nums[cur + 2];
-            retnum++;
-            printf("rettmp[i][0] = %d rettmp[i][1] = %d rettmp[i][2] = %d retnum = %d \n", rettmp[i][0], rettmp[i][1], rettmp[i][2], retnum);
+        next = cur + 1;
+        while(next < numsSize - 1) {
+            jmp = next + 1;
+            while(jmp < numsSize) {
+                printf("nums[cur] = %d nums[next] = %d nums[jmp] = %d\n", nums[cur], nums[next], nums[jmp]);
+                if (nums[cur] + nums[next] + nums[jmp] == 0) {                //如果满足条件就存储起来
+                    (rettmp[i]) = (int *) malloc (sizeof(int) * 3);
+                    (rettmp[i])[0] = nums[cur];
+                    (rettmp[i])[1] = nums[next];
+                    (rettmp[i])[2] = nums[jmp];
+                    printf("i = %d rettmp[i][0] = %d rettmp[i][1] = %d rettmp[i][2] = %d retnum = %d \n", i, (rettmp[i])[0], (rettmp[i])[1], (rettmp[i])[2], retnum);
+                    i++;
+                    retnum++;
+                }
+                jmp++;
+            }
+            next++;
         }
         cur++;
     }

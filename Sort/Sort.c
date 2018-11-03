@@ -6,8 +6,38 @@ void Swap(int *a, int *b)
     *a = *b;
     *b = tmp;
 }
+//插入排序
+void InsertSort(int array[], int size)
+{
+    for (int i = 0; i < size; i++) {
+        for (int j = i; j > 0; j--) {
+            if (array[j] >= array[j - 1]) {
+                break;
+            }
+            Swap(array + j, array + j - 1);
+        }
+    }
+}
 
-void Print(int array[], int size);
+//冒泡排序
+void BubbleSort(int array[], int size)
+{
+    int flag = 0;
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - 1 -i; j++) {
+            if (array[j] > array[j + 1]) {
+                Swap(array + j, array + j + 1);
+                flag = 1;
+            }
+        }
+        if (flag == 0) {
+            break;
+        }
+    }
+}
+
+
+//选择排序
 void SelectSort_0(int array[], int size) {
     int max = 0;         //用来保存本次求出的最大值的下标
     int i = 0;
@@ -24,6 +54,7 @@ void SelectSort_0(int array[], int size) {
         }
     }
 }
+
 void SelectSort_1(int array[], int size)
 {
     int min = 0;
@@ -56,6 +87,9 @@ void SelectSort_1(int array[], int size)
     }
 }
 
+
+
+//堆排序
 void AdjustDown(int array[], int size, int root)
 {
     int left = 2 * root + 1;
@@ -88,22 +122,18 @@ void CreatHeap(int array[], int size)
     
 }
 
-void BubbleSort(int array[], int size)
+
+void HeapSort(int array[], int size)
 {
-    int flag = 0;
-    for (int i = 0; i < size - 1; i++) {
-        for (int j = 0; j < size - 1 -i; j++) {
-            if (array[j] > array[j + 1]) {
-                Swap(array + j, array + j + 1);
-                flag = 1;
-            }
-        }
-        if (flag == 0) {
-            break;
-        }
+    CreatHeap(array, size);
+    for (int i = size - 1; i > 0; i--) {
+        Swap(array + i, array);
+        AdjustDown(array, i, 0);
     }
 }
 
+
+//快速排序
 int Partition_01(int array[], int left, int right)
 {
     int start = left;
@@ -203,7 +233,7 @@ int main()
     int size = sizeof(array) / sizeof(array[0]);
     Print(array, size);
   //  QuickSort(array, size);
-    SelectSort_0(array, size);
+    HeapSort(array, size);
     Print(array, size);
     return 0;
 }
