@@ -37,7 +37,7 @@ void BubbleSort(int array[], int size)
 }
 
 
-//选择排序
+//选择排序// 
 void SelectSort_0(int array[], int size) {
     int max = 0;         //用来保存本次求出的最大值的下标
     int i = 0;
