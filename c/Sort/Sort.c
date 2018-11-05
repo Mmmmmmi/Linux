@@ -6,6 +6,15 @@ void Swap(int *a, int *b)
     *a = *b;
     *b = tmp;
 }
+
+void Print(int array[], int size)
+{
+    for (int i = 0; i < size; i++) {
+        printf("%d ", array[i]);
+    }
+    printf("\n");
+}
+
 //插入排序
 void InsertSort(int array[], int size)
 {
@@ -122,13 +131,14 @@ void CreatHeap(int array[], int size)
     
 }
 
-
 void HeapSort(int array[], int size)
 {
     CreatHeap(array, size);
+    Print(array, size);
     for (int i = size - 1; i > 0; i--) {
         Swap(array + i, array);
         AdjustDown(array, i, 0);
+        Print(array, size);
     }
 }
 
@@ -218,13 +228,6 @@ void QuickSort(int array[], int left, int right) {
 
 #endif 
 
-void Print(int array[], int size)
-{
-    for (int i = 0; i < size; i++) {
-        printf("%d ", array[i]);
-    }
-    printf("\n");
-}
 
 
 int main()
