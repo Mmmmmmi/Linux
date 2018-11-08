@@ -109,6 +109,7 @@ int** threeSum(int* nums, int numsSize, int* returnSize)
     }
 //    Print(ret, retnum);
     free(rettmp);
+    rettmp = NULL;
     return ret;  
 }
 
