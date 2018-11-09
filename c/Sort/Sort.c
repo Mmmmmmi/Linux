@@ -138,7 +138,7 @@ void HeapSort(int array[], int size)
     for (int i = size - 1; i > 0; i--) {
         Swap(array + i, array);
         AdjustDown(array, i, 0);
-        Print(array, size);
+//        Print(array, size);
     }
 }
 
