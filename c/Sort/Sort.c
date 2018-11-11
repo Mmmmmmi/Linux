@@ -136,9 +136,12 @@ void HeapSort(int array[], int size)
     CreatHeap(array, size);
     Print(array, size);
     for (int i = size - 1; i > 0; i--) {
+        printf("1:  ");
+        Print(array, size);
         Swap(array + i, array);
         AdjustDown(array, i, 0);
-//        Print(array, size);
+        printf("2:  ");
+        Print(array, size);
     }
 }
   
