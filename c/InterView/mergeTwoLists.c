@@ -41,22 +41,21 @@ struct ListNode* mergeTwoLists(struct ListNode* l1, struct ListNode* l2) {
         if (cur1->val <= cur2->val) {
             if (ret == NULL) {
                 ret = cur1;
-                curret = cur1;
             }
-            temp = cur1->next;
-            curret->next = cur1;
+            else {
+                curret->next = cur1;
+            }
             curret = cur1;
-            cur1 = temp;
-
+            cur1 = cur1->next;
         }else {
             if (ret == NULL) {
                 ret = cur2;
-                curret = cur2;
             }
-            temp = cur2->next;
-            curret->next = cur2;
+            else {
+                curret->next = cur2;
+            }
             curret = cur2;
-            cur2 = temp;
+            cur2 = cur2->next;
         }
         
     }
