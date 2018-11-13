@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdio.h>
+#include <stdlib.h>
 
 
 // 插入排序
@@ -177,12 +178,10 @@ void CreateHeap(int array[], int size)
 // 不稳定
 // 时间复杂度	O(N*logN)
 // 空间复杂度	O(1)
-void PrintArray(int array[], int size);
 void HeapSort(int array[], int size)
 {
 	// 1. 建大堆（升序）
 	CreateHeap(array, size);
-	PrintArray(array, size);
 
 	for (int i = 0; i < size; i++) {
 		Swap(&array[0], &array[size - 1 - i]);
@@ -272,6 +271,23 @@ int Partition_02(int array[], int left, int right)
 	return begin;
 }
 
+
+int Partition_03(int array[], int left, int right)
+{
+	int cur, div;
+
+	for (cur = left, div = left; cur < right; cur++) {
+		if (array[cur] < array[right]) {
+			Swap(array + cur, array + div);
+			div++;
+		}
+	}
+
+	Swap(array + div, array + right);
+
+	return div;
+}
+
 // array [left, right]
 // 左闭右闭
 void __QuickSort(int array[], int left, int right)
@@ -286,7 +302,7 @@ void __QuickSort(int array[], int left, int right)
 		return;
 	}
 
-	int div = Partition_02(array, left, right);
+	int div = Partition_03(array, left, right);	// 时间复杂度 O(N) 空间 O(1)
 	// div 是基准值所在的下标
 	// [left, div-1]
 	// [div+1, right]
@@ -300,10 +316,114 @@ void QuickSort(int array[], int size)
 	__QuickSort(array, 0, size - 1);
 }
 
+// [left, mid)	有序
+// [mid, right)	有序
+// O(n)
+// O(n)
+void Merge(int array[], int left, int mid, int right, int extra[])
+{
+	int left_i = left;	// [left, mid)
+	int right_i = mid;	// [mid, right)
+	int extra_i = left;
+
+	while (left_i < mid && right_i < right) {
+		if (array[left_i] <= array[right_i]) {
+			extra[extra_i++] = array[left_i++];
+		}
+		else {
+			extra[extra_i++] = array[right_i++];
+		}
+	}
+
+	while (left_i < mid) {
+		extra[extra_i++] = array[left_i++];
+	}
+
+	while (right_i < right) {
+		extra[extra_i++] = array[right_i++];
+	}
+
+	for (int i = left; i < right; i++) {
+		array[i] = extra[i];
+	}
+}
+
+// [left, right)
+void __MergeSort(int array[], int left, int right, int extra[])
+{
+	// [0,1)
+	if (left == right - 1) {
+		// 区间内只剩一个数，已经有序
+		return;
+	}
+
+	if (left >= right) {
+		// 区间内没有数了
+		return;
+	}
+	/// [left, right)
+	// [left, mid)
+	// [mid, right)
+	int mid = left + (right - left) / 2;
+	__MergeSort(array, left, mid, extra); 
+	__MergeSort(array, mid, right, extra);
+	Merge(array, left, mid, right, extra);
+}
+
+// 稳定
+void MergeSort(int array[], int size)
+{
+	int *extra = (int *)malloc(sizeof(int)* size);
+	__MergeSort(array, 0, size, extra);
+	free(extra);
+}
+
+void MergeSortLoop(int array[], int size)
+{
+	int *extra = (int *)malloc(sizeof(int)* size);
+	for (int i = 1; i < size; i *= 2) {	// 一共循环 log(size)
+		for (int j = 0; j < size; j = j + 2 * i) {
+			int left = j;
+			int mid = j + i;
+			int right = mid + i;
+
+			if (mid >= size) {
+				continue;
+			}
+
+			if (right > size) {
+				right = size;
+			}
+
+			Merge(array, left, mid, right, extra);
+		}
+	}
+	free(extra);
+}
+
+#include "高精度计时.h"
 
 void Test()
 {
-	//int array[] = { 3, 5, 1, 4, 7, 2, 6, 0, 9, 8, 8 };
+	srand(20181025);
+	const int size = 100000;
+	int array[size];
+	for (int i = 0; i < size; i++) {
+		array[i] = rand() % 10000;
+	}
+
+	高精度计时	计时器;
+	计时器.开始();
+	MergeSort(array, size);
+	计时器.结束();
+
+	printf("执行时间 %f 毫秒\n", 计时器.间隔毫秒());
+}
+
+/*
+void Test()
+{
+	int array[] = { 3, 5, 1, 4, 7, 2, 6, 0, 9, 8, 8 };
 	// 1. 已经有序
 	// 2. 完全逆序
 	// 3. 乱序
@@ -312,9 +432,9 @@ void Test()
 	// 6. 0 个数
 	// 7. 多个数
 	//int array[] = { 1, 1, 1, 1, 1, 1, 1,1, 1 };
-	int array[] = {2, 6, 4, 3, 7, 1, 0, 8, 9, 5};  
-    int size = sizeof(array) / sizeof(int);
+	int size = sizeof(array) / sizeof(int);
 
-	HeapSort(array, size);
+	MergeSortLoop(array, size);
 	PrintArray(array, size);
 }
+*/

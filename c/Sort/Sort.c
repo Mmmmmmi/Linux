@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <stdlib.h>
 void Swap(int *a, int *b)
 {
     int tmp = *a;
@@ -15,7 +15,7 @@ void Print(int array[], int size)
     printf("\n");
 }
 
-//插入排序
+//插入排序//
 void InsertSort(int array[], int size)
 {
     for (int i = 0; i < size; i++) {
@@ -28,7 +28,82 @@ void InsertSort(int array[], int size)
     }
 }
 
-//冒泡排序
+#if 1
+//希尔排序
+void __InsertSort(int array[], int size, int gap)
+{
+    int i = 0;
+    int j = 0;
+    for (i = gap; i < size; i++) {
+        int k = array[i];
+        for (j = i - gap; j >= 0; j -= gap) {
+            if (k >= array[j]) {
+                break;
+            }
+            array[j + gap] = array[j];
+        }
+        array[j + gap] = k;
+    }
+}
+
+
+
+
+void ShellSort(int array[], int size)
+{
+    int gap = size / 3 + 1;
+    while(1) {
+        gap = gap / 3 + 1;
+        __InsertSort(array, size, gap);
+        if (gap == 1) {
+            return;
+        }
+    }
+}
+
+
+#else 
+void __InsertSort(int array[], int size, int gap)                                                                                                                        
+{
+        int key;
+        int i, j;
+        for (i = gap; i < size; i++) {
+            printf("i == %d gap == %d \n", i, gap);
+            key = array[i];
+            for (j = i - gap; j >= 0; j -= gap) {
+                printf("j == %d \n", j);
+                if (key >= array[j]) {
+                    break;
+                }
+                else {
+                   array[j + gap] = array[j];
+                }
+            }
+            array[j + gap] = key;
+            Print(array, size);
+       }
+}
+ 
+//希尔排序
+// 1. 不稳定
+// 2. 最好/平均/最差    O(n)/O(n^1.2~1.3)/O(n^2)
+// 3. 空间复杂度        O(1)
+void ShellSort(int array[], int size)
+{
+    int gap = size;
+    // gap 动态变化
+    while (1) {
+        gap = gap / 3 + 1;
+        printf("gap == %d \n", gap);
+        __InsertSort(array, size, gap);
+        if (gap == 1) {
+           break;
+        }
+    }
+}
+#endif
+
+//冒泡排序//
 void BubbleSort(int array[], int size)
 {
     int flag = 0;
@@ -98,7 +173,7 @@ void SelectSort_1(int array[], int size)
 
 
 
-//堆排序
+//堆排序//
 void AdjustDown(int array[], int size, int root)
 {
     int left = 2 * root + 1;
@@ -106,7 +181,7 @@ void AdjustDown(int array[], int size, int root)
     if (left >= size) {
         return;
     }
-    int max = array[left];
+    int max = left;
     if (right < size && array[right] > array[left]) {
         max = right;
     } 
@@ -123,7 +198,7 @@ void AdjustDown(int array[], int size, int root)
 
 void CreatHeap(int array[], int size)
 {
-    int root = (size - 1 - 1) / 2;
+    int root = (size- 1 - 1) / 2;
     while(root >= 0) {
         AdjustDown(array, size, root);
         root--;
@@ -134,19 +209,14 @@ void CreatHeap(int array[], int size)
 void HeapSort(int array[], int size)
 {
     CreatHeap(array, size);
-    Print(array, size);
     for (int i = size - 1; i > 0; i--) {
-        printf("1:  ");
-        Print(array, size);
         Swap(array + i, array);
         AdjustDown(array, i, 0);
-        printf("2:  ");
-        Print(array, size);
     }
 }
   
 
-//快速排序
+//快速排序//
 int Partition_01(int array[], int left, int right)
 {
     int start = left;
@@ -232,6 +302,63 @@ void QuickSort(int array[], int left, int right) {
 #endif 
 
 
+//归并排序
+//
+ 
+void Merage(int array[], int left, int mid, int right, int extra[])
+{
+    int left_i = left;
+    int right_i = mid;
+    int extra_i = 0;
+    while(left_i < mid && right_i < right) {
+        if (array[left_i] <= array[right_i]) {
+            extra[extra_i++] = array[left_i++];
+        }
+        else {
+            extra[extra_i++] = array[right_i++];
+        }
+    }
+
+    while(left_i < mid) {
+        extra[extra_i++] = array[left_i++];
+    }
+
+    while(right_i < right) {
+        extra[extra_i++] = array[right_i++];
+    }
+    for (int i = left; i < right; i++) {
+        array[i] = extra[i];
+    }
+}
+
+
+
+
+void  _MergeSort(int array[], int left, int right, int extra[])
+{
+
+    // 区间内只有一个数
+    if (left == right - 1) {
+        return;
+    }
+    //区间内没有数
+    if (left >= right) {
+        return;
+    }
+    int mid = left +  (right - left) / 2;
+    _MergeSort(array, left, mid, extra);
+    _MergeSort(array, mid, right, extra);
+    Merage(array, left, mid, right, extra);
+}
+
+void MergeSort(int array[], int size)
+{
+    int *extra = (int *) malloc (sizeof(int) * size);
+    _MergeSort(array, 0, size, extra);
+    free(extra);
+}
+
+
 
 int main()
 {
@@ -239,7 +366,13 @@ int main()
     int size = sizeof(array) / sizeof(array[0]);
     Print(array, size);
   //  QuickSort(array, size);
-    HeapSort(array, size);
+  //  HeapSort(array, size);
+  //  BubbleSort(array, size);
+  //  SelectSort_0(array, size);
+  //  SelectSort_1(array, size);
+  //  InsertSort(array, size);
+  //  ShellSort(array, size);
+    MergeSort(array, size);   
     Print(array, size);
     return 0;
 }
