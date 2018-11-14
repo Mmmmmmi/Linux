@@ -309,7 +309,7 @@ void Merage(int array[], int left, int mid, int right, int extra[])
 {
     int left_i = left;
     int right_i = mid;
-    int extra_i = 0;
+    int extra_i =left;
     while(left_i < mid && right_i < right) {
         if (array[left_i] <= array[right_i]) {
             extra[extra_i++] = array[left_i++];
