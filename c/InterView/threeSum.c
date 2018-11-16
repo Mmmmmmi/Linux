@@ -72,7 +72,7 @@ int** threeSum(int* nums, int numsSize, int* returnSize)
     }
 
     Print1(nums, numsSize);
-    rettmp = (int **) malloc (sizeof(int *) * numsSize);
+    rettmp = (int **) malloc (sizeof(int *) * 1);
     if (rettmp == NULL) {
         returnSize = 0;
         return NULL;
@@ -88,6 +88,13 @@ int** threeSum(int* nums, int numsSize, int* returnSize)
                     if (i != 0 && Search(rettmp, i, nums[cur], nums[jmp])) {
                         jmp++;
                         continue;
+                    }
+                    if (i != 1) {
+                        int **tmp = (int **)realloc(rettmp, sizeof(int *) * (i + 1));
+                        if (tmp == NULL) {
+                            printf("realloc error\n");
+                        }
+                        rettmp = tmp;
                     }
                     (rettmp[i]) = (int *) malloc (sizeof(int) * 3);
                     (rettmp[i])[0] = nums[cur];
