@@ -8,10 +8,21 @@
     
 //}
 
-int threeSumClosest(int* nums, int numsSize, int target) {
-    
-}
 #include <stdio.h>
+
+
+
+int threeSumClosest(int* nums, int numsSize, int target) {
+    int ret = 0;
+    int i = 0;
+    int left = nums[0];
+    int right = nums[numsSize - 1];
+    int closest = 0;
+    while(i < numsSize - 2) {
+        left = nums[i];
+        right = nums[numsSize - 1];
+    }
+}
 
 int main()
 {
