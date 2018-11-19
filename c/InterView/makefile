@@ -1,4 +1,6 @@
-ALL:isValid MergeKList threeSum
+
+threeSumClosest:threeSumClosest.c
+	gcc -g $^ -o $@
 threeSum:threeSum.c
 	gcc -g $^ -o $@
 isValid:isValid.c
