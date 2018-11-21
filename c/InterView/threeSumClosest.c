@@ -33,6 +33,7 @@ int threeSumClosest(int* nums, int numsSize, int target) {
         if (flag == 1) {
             break;
         }
+
     }
     i = 0;
     while(i < numsSize - 2) {
