@@ -21,7 +21,6 @@ int threeSumClosest(int* nums, int numsSize, int target) {
     int ret = 0;
     int i = 0;
     int closest = 0;
-    int tmptarget = target;
     for (i = 0; i < numsSize - 1; i++) {
         int flag = 1;
         for (int j = 0; j < numsSize - 1 - i; j++) {
@@ -38,46 +37,52 @@ int threeSumClosest(int* nums, int numsSize, int target) {
     while(i < numsSize - 2) {
         int left = i + 1;
         int right = numsSize - 1;
-        tmptarget = target;
+        int flag = target - nums[i];
+        if (i == 0) {
+            ret = nums[left] + nums[right] + nums[i];
+            closest = target - ret > 0 ? target - ret : ret - target;
+        }
         while(left < right) {
-            if (i == 0) {
-                ret = nums[i] + nums[left] + nums[right];
-                closest = ret - tmptarget> 0 ? ret - tmptarget : tmptarget - ret;
+            int sub = nums[left] + nums[right] - flag;
+            printf("nums[i] = %d nums[left] = %d nums[right] = %d flag = %d sub = %d", nums[i], nums[left], nums[right], flag, sub);
+            if (sub == 0) {
+                return nums[left] + nums[right] + nums[i];
             }
-            else {
-                int subtmp = 0;
-                int add = nums[i] + nums[left] + nums[right];
-                if (tmptarget < 0 && add < 0) {
-                    subtmp = tmptarget - add > 0 ? tmptarget - add : add - tmptarget;
-                } else if (tmptarget > 0 && add > 0) {
-                    subtmp = tmptarget - add > 0 ? tmptarget - add : add - tmptarget;
-                } else if (tmptarget < 0 && add > 0) {
-                    subtmp = add - tmptarget;
-                } else if (tmptarget > 0 && add < 0) {
-                    subtmp = tmptarget - add;
+            else if (sub > 0){
+                if (sub < closest) {
+                    closest = sub;
+                    ret = nums[left] + nums[right] + nums[i];
+                }
+                right--;
                }
-               if (subtmp > closest) {
-                    return ret;
+            else if (sub < 0){
+                if (-sub < closest) {
+                    closest = -sub;
+                    ret = nums[left] + nums[right] + nums[i];
+                }
+                left++;
                }
-               else {
-                    closest = subtmp;
-                    ret = add;
-                    if (add > tmptarget && target > 0) right--;
-                    if (add > tmptarget && target < 0) left++;
-                    if (add < tmptarget && target > 0) left++;
-                    if (add < tmptarget && target < 0) righ -lstdc++t--;
-                    }
-               }
+            printf("    closest = %d ret = %d\n", closest, ret);
             }
+        i++;
     }
     return ret;
 }
 
 int main()
 {
-    int num[] = {-2,0,0,2,2};
+//      int num[] = {-2,0,0,2,2};
+//    int num[] = {0,0,0};
+//    int num[] = {0,1,2};
+//    int num[] = {1,1,1,0};
+    int num[] = {-2,-1,0,1,5};
+//
     int size = sizeof(num) / sizeof(num[0]);
-    printf("%d\n", threeSumClosest(num, size, 0));
+    for (int i = 0; i < size; i++) {
+        printf("%d   ", num[i]);
+    }
+    printf("\n");
+    printf("%d\n", threeSumClosest(num, size, 1));
     return 0;
 }
 
