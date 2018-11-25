@@ -1,7 +1,13 @@
 #pragma once
 
+#include <iostream>
 class Date
 {
+
+
+    friend std::ostream& operator<<(std::ostream& _cout, const Date& d);
+    friend std::istream& operator>>(std::istream& _cin, Date& d);
+
 public:
     Date(int year = 1970, int month = 1, int day = 1);
     ~Date();
@@ -25,6 +31,8 @@ public:
 
 
 private:
+    bool isLeapYear();
+    int getDayInMonth();
     int _year;
     int _month;
     int _day;
