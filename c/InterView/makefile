@@ -1,4 +1,6 @@
 
+search:search.c
+	gcc -g $^ -o $@
 removeDuplicates:removeDuplicates.c
 	gcc -g $^ -o $@
 threeSumClosest:threeSumClosest.c
