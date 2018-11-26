@@ -35,50 +35,50 @@ int search(int* nums, int numsSize, int target) {
     int mid = 0;
     if (nums[0] <= nums[numsSize - 1]){
         if (target < nums[0] || target > nums[numsSize - 1])
-        return -1;
+            return -1;
     }   
-    if (nums[0] < nums[numsSize - 1]) {
-        while (left <= right) {
-            mid = left + ((right - left) >> 1);
-            if (nums[mid] == target) {
-                return mid;
-            }else {
-                if (nums[mid] > target) {
-                    right = mid - 1;
-                }else {
-                    left = mid + 1;
-                }
-            }
+    while (left <= right) {
+        if (left == right && nums[left] != target) {
+            return -1;
         }
-    }else {
-        while(left <= right) {
-            mid = left + ((right - left) >> 1);
-            printf("nums[left] == %d nums[right] == %d nums[mid] == %d\n", nums[left], nums[right], nums[mid]);
-            if (nums[mid] == target) {
-                return mid;
-            }
-            if (left == right && nums[mid] != target) {
-                return -1;
-            }else if (nums[mid] > target) {
-                if (nums[left] > target) {
+        mid = left + ((right - left) >> 1);
+        printf("left == %d right == %d mid == %d\n", left, right, mid);
+        if (nums[mid] == target) {
+            return mid;
+        }else if (nums[mid] > target){
+            if (nums[mid] > nums[left]) {        //左边有序
+                if (nums[left] == target) {
+                    return left;
+                }else if (nums[left] > target) {        //左边最小的比目标数大   //目标数在右边
                     left = mid + 1 > numsSize - 1 ? numsSize - 1 : mid + 1;
-                }else {
-                    if (nums[left] == target) {
-                        return left;
-                    }
+                }else {                                  //左边的比目标数小    //目标数在左边
                     right = mid - 1 > 0 ? mid - 1 : 0;
                 }
-            }else {
-                if (nums[left] < target) {
-                    left = mid + 1 > numsSize - 1 ? numsSize - 1 : mid + 1;
-                }else {
-                    if (nums[left] == target) {
-                        return left;
-                    }
+            }else if (nums[mid] <= nums[left]){ //右边有序
+                if (nums[right] == target) {
+                    return right;
+                }else {        //右边最大的比目标数大   //目标数在
                     right = mid - 1 > 0 ? mid - 1 : 0;
                 }
             }
+        }else if (nums[mid] < target) {
+            if (nums[mid] > nums[left]) {        //左边有序
+                if (nums[left] == target) {
+                    return left;
+                }else {        //左边最小的比目标数小   //目标数在右边
+                    left = mid + 1 > numsSize - 1 ? numsSize - 1 : mid + 1;
+                }
+            }else if (nums[mid] <= nums[left]){ //右边有序
+                if (nums[right] == target) {
+                    return right;
+                }else if (nums[right] > target) {        //右边最大的比目标数大   //目标数在右边
+                    left = mid + 1 > numsSize - 1 ? numsSize - 1 : mid + 1;
+                }else {                                  //右边的比目标数小    //目标数在左边
+                    right = mid - 1 > 0 ? mid - 1 : 0;
+                }
+            }
         }
+        sleep(1);
     }
     return -1;
 }
@@ -86,12 +86,14 @@ int search(int* nums, int numsSize, int target) {
 
 int main()
 {
+//    int array[] = {5, 1, 2, 3, 4};
 //    int array[] = {1, 3};
-    int array[] = {5, 1, 3};
+    int array[] = {3, 1};
+//    int array[] = {5, 1, 3};
 //    int array[] = {4,5,6,7,0,1,2};
 //    int array[] = {5,6,7,0,1,2,4};
     int size = sizeof(array) / sizeof(array[0]);
-    printf("%d\n", search(array, size, 3));
+    printf("%d\n", search(array, size, 2));
     return 0;
 }
 
