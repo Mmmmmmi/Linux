@@ -1,6 +1,8 @@
 
 multiply:multiply.c
 	gcc -g $^ -o $@
+reverseString:reverseString.c
+	gcc -g $^ -o $@
 search:search.c
 	gcc -g $^ -o $@
 removeDuplicates:removeDuplicates.c
