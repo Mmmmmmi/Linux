@@ -42,7 +42,7 @@ char* multiply(char* num1, char* num2) {
     if (num1 == NULL || num2 == NULL) {
         return NULL;
     }    
-    //先给字符串中全部放上\0 
+    //先给字符串中全部放上'0' 
     ret = (char *) malloc (sizeof(char) * (num1len + num2len + 1));
     memset(ret, '0', sizeof(char) + (num1len + num2len + 1));
     ret[num1len + num2len] = '\0';
@@ -59,7 +59,6 @@ char* multiply(char* num1, char* num2) {
 
     for (int i = little - 1; i >= 0; i--) {
         temp1 = little == num1len ? num1[i] - '0' : num2[i] - '0';
-        printf("temp1 == %d ", temp1);
         jbit = ibit; 
         for (int j = big - 1; j >= 0; j--) {
             temp2 = little == num1len ? num2[j] - '0' : num1[j] - '0';
@@ -78,33 +77,31 @@ char* multiply(char* num1, char* num2) {
                 add %= 10;
             }
             ret[num1len + num2len - 1 - jbit] = add + '0'; 
-            printf("temp2 == %d ", temp2);
-            printf("mul == %d add == %d carryflag == %d \nret[num1len + num2len - 1 - jbit] == %d num1len + num2len - 1 - jbit == %d jbit == %d\n\n", mul, add, carryflag, ret[num1len + num2len - 1 - jbit] - '0', num1len + num2len - 1 - jbit, jbit);
             jbit++;
             if (carryflag != 0) {
                 ret[num1len + num2len - 1 - jbit] += carryflag;
             }
         }
-        printf("%s", ret);
         ibit++;
-        printf("\n");
     }
     if (ret[0] == '0') {
         for (int i = 0; i < strlen(ret); i++) {
             ret[i] = ret[i + 1];
         }
     }
+    char *temp = (char *)realloc(ret, sizeof(char) * (strlen(ret)));
+    if (temp != NULL) {
+        ret = temp;
+    }
     return ret;
 }
 
 
 
-
 int main()
 {
-    char num1[] = "78494931482444206733490681";
-    char num2[] = "7005919951485201943123477373408130621818958609915320";
-    //00000
+    char num1[] = "2";
+    char num2[] = "3";
     char *ret = multiply(num1, num2);
     printf("%s\n", ret);
     free(ret);
