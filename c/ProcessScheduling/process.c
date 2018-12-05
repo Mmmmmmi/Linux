@@ -323,9 +323,12 @@ int main()
     PCB *pcbs = (PCB *) malloc (sizeof(PCB) * processnumber);
     memset(pcbs, 0, sizeof(PCB) * processnumber);
     for (int i = 0; i < processnumber; i++) {
-        getchar();
         printf("process->name: ");
-        scanf("%c",&(pcbs[i].name));
+        //这里有坑 ：
+        //  可以用 scanf(" %c")    //   %c 前面加一个空格
+        //  或者在上一行加一个getchar()
+        //  getchar();
+        scanf(" %c",&(pcbs[i].name));
         printf("process->ArricalTime: ");
         scanf("%d",&(pcbs[i].ArrivalTime));
         printf("process->ServiceTime: ");
