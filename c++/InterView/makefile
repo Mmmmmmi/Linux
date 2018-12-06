@@ -1,4 +1,6 @@
 
+singleNumber:singleNumber.cpp
+	g++ -g $^ -o $@
 permute:permute.cpp
 	g++ -g $^ -o $@
 multiply:multiply.cpp
