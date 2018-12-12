@@ -1,4 +1,6 @@
 
+spiralOrder:spiralOrder.cpp
+	g++ -g $^ -o $@
 singleNumber:singleNumber.cpp
 	g++ -g $^ -o $@
 permute:permute.cpp
