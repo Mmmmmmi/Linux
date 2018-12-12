@@ -199,6 +199,18 @@ int Date::operator-(const Date& d) const
     return ret;
 }
 
+//&运算符重载
+Date* Date::operator&()
+{
+    return this;
+}
+
+//&运算符重载   针对const 对象
+const Date* Date::operator&() const
+{
+    return this;
+}
+
 //>运算符重载
 bool Date::operator>(const Date& d) const
 {
