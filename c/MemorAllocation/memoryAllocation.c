@@ -23,13 +23,15 @@ void recoveryMemory(struct memLinkList *memlist)
 
 int main()
 {
-    size_t memerynumber = 0;
-    size_t emptymem = 0;
+    size_t membegin = 0;
+    size_t memsize = 0;
     int i = 0;
     struct memLinkList memlist;
-    memListInit(&memlist);
-    printf("please input memery number: ");
-    scanf("%lu", &emptymem);
+    printf("please input memery begin: ");
+    scanf("%lu", &membegin);
+    printf("please input memery szie: ");
+    scanf("%lu", &memsize);
+    memListInit(&memlist, membegin, memsize);
 
     while (1) {
             printf("请选择功能: ");
