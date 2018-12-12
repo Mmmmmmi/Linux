@@ -1,4 +1,6 @@
 
+generateMatrix:generateMatrix.cpp
+	g++ -g $^ -o $@
 spiralOrder:spiralOrder.cpp
 	g++ -g $^ -o $@
 singleNumber:singleNumber.cpp
