@@ -1,6 +1,6 @@
 
-#include <stdio.h>
 #include "head.h"
+#include <stdio.h>
 
 
 void FF() {
