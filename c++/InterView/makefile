@@ -1,4 +1,6 @@
 
+rotateRight:rotateRight.cpp
+	g++ -g $^ -o $@
 generateMatrix:generateMatrix.cpp
 	g++ -g $^ -o $@
 spiralOrder:spiralOrder.cpp
