@@ -1,0 +1,16 @@
+a.txt
+makefile
+minishell
+MiniShell_1
+MiniShell_1.c
+MiniShell_2
+MiniShell_2.c
+minishell.c
+a.txt
+makefile
+minishell
+MiniShell_1
+MiniShell_1.c
+MiniShell_2
+MiniShell_2.c
+minishell.c
