@@ -1,4 +1,6 @@
 
+climbStairs:climbStairs.cpp
+	g++ -g $^ -o $@
 rotateRight:rotateRight.cpp
 	g++ -g $^ -o $@
 generateMatrix:generateMatrix.cpp
