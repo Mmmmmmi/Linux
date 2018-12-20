@@ -120,7 +120,6 @@ void memListInit(struct memLinkList *pmemlist, size_t begin, size_t size)
     struct Node *ret = creatNode(begin, size);
     pmemlist->_emptylist._head = ret;
     pmemlist->_emptylist._tail = ret;
-    printList(pmemlist);
 }
 
 void Swap(struct Node *pnode1, struct Node *pnode2) 
