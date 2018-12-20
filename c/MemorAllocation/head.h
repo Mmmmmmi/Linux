@@ -50,6 +50,7 @@ struct Node* creatNode(size_t begin, size_t size)
     temp->_data._size = size;
     temp->_data._end = begin + size;
     temp->_next = NULL;
+    temp->_prev = NULL;
     return temp;
 }
 
@@ -118,6 +119,7 @@ void memListInit(struct memLinkList *pmemlist, size_t begin, size_t size)
     //先把第一个空的挂在空闲内存链表的第一个
     struct Node *ret = creatNode(begin, size);
     pmemlist->_emptylist._head = ret;
+    pmemlist->_emptylist._tail = ret;
     printList(pmemlist);
 }
 
@@ -125,40 +127,63 @@ void Swap(struct Node *pnode1, struct Node *pnode2)
 {
     assert(pnode1 != NULL);
     assert(pnode2 != NULL);
-    struct Node temp;
-     = pnode1->_data;
-
+    struct memeryNode temp;
+    temp = pnode1->_data;
+    pnode1->_data = pnode2->_data;
+    pnode2->_data = temp;
 }
 
-
-void sortAdr(struct memLinkList *pmemlist)
+//地址升序排序
+void sortAscAdr(struct memLinkList *pmemlist)
 {
     assert(pmemlist != NULL); 
     struct Node *cur = NULL;
     cur = pmemlist->_emptylist._head;
     while(cur->_next != NULL) {
         if (cur->_data._begin > cur->_next->_data._begin) {
-            Swap(cur->_data, cur->_next->_data);
+            Swap(cur, cur->_next);
+        }
+       cur = cur->_next; 
+    }
+}
+
+//内存块大小升序
+void sortAscSize(struct memLinkList *pmemlist)
+{
+    assert(pmemlist != NULL);
+    struct Node *cur = NULL;
+    cur = pmemlist->_emptylist._head;
+    while(cur->_next != NULL) {
+        if (cur->_data._size > cur->_next->_data._size) {
+            Swap(cur, cur->_next);
         }
        cur = cur->_next; 
     }
 }
 
 
-void sortAscSize(struct memLinkList *pmemlist)
-{
-    assert(pmemlist != NULL);
-}
-
-
+//内存块大小降序
 void sortDescSize(struct memLinkList *pmemlist)
 {
     assert(pmemlist != NULL);
+    struct Node *cur = NULL;
+    cur = pmemlist->_emptylist._head;
+    while(cur->_next != NULL) {
+        if (cur->_data._size < cur->_next->_data._size) {
+            Swap(cur, cur->_next);
+        }
+       cur = cur->_next; 
+    }
 }
 
-void emptyMemeryPushBack(struct memLinkList *pmemlist, size_t memnumber)
+//回收占用的内存块
+//传进来一个  memeryNode  包含起始地址　大小　和结束地址
+void emptyMemeryPushBack(struct memLinkList *pmemlist, struct memeryNode *pmemnode)
 {
-    
+    assert(pmemlist != NULL);
+    struct Node *retnode = creatNode(pmemnode->_begin, pmemnode->_size);
+    pmemlist->_emptylist._tail->_next = retnode;
+    pmemlist->_emptylist._tail = retnode;
 }
 
 

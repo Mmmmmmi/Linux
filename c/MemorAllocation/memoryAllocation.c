@@ -5,14 +5,15 @@
 void FF(struct memLinkList *pmemlist)
 {
     assert(pmemlist != NULL);
-    sortAdr(pmemlist);
+    sortAscAdr(pmemlist);
+    printList(pmemlist);
 }
 
 //循环首次适应算法
 void NF(struct memLinkList *pmemlist)
 {
    assert(pmemlist != NULL);
-   sortAdr(pmemlist);
+   sortAscAdr(pmemlist);
 }
 
 //最佳适应算法
@@ -60,7 +61,7 @@ void allocateMemory(struct memLinkList *pmemlist)
 
 void recoveryMemory(struct memLinkList *memlist)
 {
-
+     
 }
 
 int main()
