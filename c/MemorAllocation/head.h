@@ -49,8 +49,8 @@ struct Node* creatNode(size_t begin, size_t size)
     temp->_data._begin = begin;
     temp->_data._size = size;
     temp->_data._end = begin + size - 1;
-    temp->_next = NULL;
-    temp->_prev = NULL;
+    temp->_next = temp;
+    temp->_prev = temp;
     return temp;
 }
 
@@ -64,21 +64,28 @@ void printList(struct memLinkList *pmemlist)
     printf("空闲内存链表为：\n");
     while (cur != NULL) {
         printf("|begin:%3lu|    ", cur->_data._begin);
+        if (cur == pmemlist->_emptylist._tail) {
+            break;
+        }
         cur = cur->_next;
     }
     printf("\n");
     cur = pmemlist->_emptylist._head;
     while (cur != NULL) {
         printf("|size :%3lu|", cur->_data._size);
-        cur = cur->_next;
-        if (cur != NULL) {
-            printf("--->");
+        if (cur == pmemlist->_emptylist._tail) {
+            break;
         }
+        cur = cur->_next;
+        printf("--->");
     }
     printf("\n");
     cur = pmemlist->_emptylist._head;
     while (cur != NULL) {
         printf("|end  :%3lu|    ", cur->_data._end);
+        if (cur == pmemlist->_emptylist._tail) {
+            break;
+        }
         cur = cur->_next;
     }
     printf("\n");
@@ -87,21 +94,28 @@ void printList(struct memLinkList *pmemlist)
     printf("已分配内存链表为：\n");
     while (cur != NULL) {
         printf("|begin:%3lu|    ", cur->_data._begin);
+        if (cur == pmemlist->_usedlist._tail) {
+            break;
+        }
         cur = cur->_next;
     }
     printf("\n");
     cur = pmemlist->_usedlist._head;
     while (cur != NULL) {
         printf("|size :%3lu|", cur->_data._size);
-        cur = cur->_next;
-        if (cur != NULL) {
-            printf("--->");
+        if (cur == pmemlist->_usedlist._tail) {
+            break;
         }
+        cur = cur->_next;
+        printf("--->");
     }
     printf("\n");
     cur = pmemlist->_usedlist._head;
     while (cur != NULL) {
         printf("|end  :%3lu|    ", cur->_data._end);
+        if (cur == pmemlist->_usedlist._tail) {
+            break;
+        }
         cur = cur->_next;
     }
     printf("\n");
@@ -137,8 +151,11 @@ void sortAscAdr(struct memLinkList *pmemlist)
 {
     assert(pmemlist != NULL); 
     struct Node *cur = NULL;
+    if (pmemlist->_emptylist._head == NULL) {
+        return;
+    }
     cur = pmemlist->_emptylist._head;
-    while(cur->_next != NULL) {
+    while(cur != pmemlist->_emptylist._tail) {
         if (cur->_data._begin > cur->_next->_data._begin) {
             Swap(cur, cur->_next);
         }
@@ -152,7 +169,7 @@ void sortAscSize(struct memLinkList *pmemlist)
     assert(pmemlist != NULL);
     struct Node *cur = NULL;
     cur = pmemlist->_emptylist._head;
-    while(cur->_next != NULL) {
+    while(cur != pmemlist->_emptylist._tail) {
         if (cur->_data._size > cur->_next->_data._size) {
             Swap(cur, cur->_next);
         }
@@ -167,7 +184,7 @@ void sortDescSize(struct memLinkList *pmemlist)
     assert(pmemlist != NULL);
     struct Node *cur = NULL;
     cur = pmemlist->_emptylist._head;
-    while(cur->_next != NULL) {
+    while(cur != pmemlist->_emptylist._tail) {
         if (cur->_data._size < cur->_next->_data._size) {
             Swap(cur, cur->_next);
         }
@@ -186,6 +203,7 @@ void usedMemeryPush(struct memLinkList *pmemlist, struct Node * pnode)
     }else {
        pmemlist->_usedlist._tail->_next = pnode; 
        pnode->_prev = pmemlist->_usedlist._tail; 
+       pnode->_next = pmemlist->_usedlist._head;
        pmemlist->_usedlist._tail = pnode; 
     }
 }
@@ -204,6 +222,12 @@ struct Node* searchUsedMemery(struct memLinkList *pmemlist, size_t membegin)
             if (cur->_next == NULL) {      //找到的是最后一个
                 pmemlist->_usedlist._tail = cur->_prev;
             }
+            if (cur->_next == cur && cur->_prev == cur) {
+                //说明只有一个节点,删除这个节点后链表为空
+                pmemlist->_usedlist._head = NULL;
+                pmemlist->_usedlist._tail = NULL;
+                break;
+            }
             if (cur->_next != NULL) {      //当前节点的下一个的prev指向当前节点的上一个
                 cur->_next->_prev = cur->_prev;
             }
@@ -213,9 +237,15 @@ struct Node* searchUsedMemery(struct memLinkList *pmemlist, size_t membegin)
             break;
         }
         cur = cur->_next;
+        if (cur == pmemlist->_usedlist._head) {
+            break;
+        }
     }
-    if (cur == NULL) {
+    if (cur == pmemlist->_emptylist._head) {
         printf("没有找到需要回收的内存!\n");
+    }else {
+        cur->_prev = NULL;
+        cur->_next = NULL;
     }
     return cur;
 }
@@ -223,8 +253,50 @@ struct Node* searchUsedMemery(struct memLinkList *pmemlist, size_t membegin)
 //可能有合并的情况
 void mergeMemery(struct memLinkList *pmemlist, struct Node *pnode)
 {
-    assert(pmemlist != NULL);
+    struct Node *del = NULL;
     assert(pnode != NULL);
+    if (pnode->_prev == pnode && pnode->_next == pnode) {
+        //只有一个节点
+        return;
+    }
+    //因为插入的时候是按地址插入的  所以它的地址肯定是升序的
+    //如果可以合并，那么肯定是两个连续的
+    if (pnode->_prev->_data._end + 1 == pnode->_data._begin) {
+        //两个是可以合并的
+        pnode->_prev->_next = pnode->_next;
+        pnode->_prev->_data._size += pnode->_data._size;
+        pnode->_prev->_data._end = pnode->_data._end;
+        if (pnode->_next != NULL) {
+            //pnode 被合并了
+            pnode->_next->_prev = pnode->_prev;
+        }
+        if (pmemlist->_emptylist._tail == pnode) {
+            //如果pnode刚好是最后一个 
+            pmemlist->_emptylist._tail = pnode->_prev;
+        }
+        //释放掉pnode   pnode可能还能和后面的合并 所以 先保存起来 让合并后的再判断一下
+        del = pnode;
+        pnode = pnode->_prev;
+        free(del);
+        del = NULL;
+    }
+    if (pnode->_data._end + 1 == pnode->_next->_data._begin) {
+        //两个是可以合并的
+        //这里要删除的是pnode的下一个节点
+        del = pnode->_next;
+        pnode->_data._size += pnode->_next->_data._size;
+        pnode->_data._end = pnode->_next->_data._end;
+        if (pnode->_next->_next != NULL) {
+            pnode->_next->_next->_prev = pnode;
+        }
+        if (pmemlist->_emptylist._tail == pnode) {
+            //如果pnode的下一个刚好是最后一个节点 
+            pmemlist->_emptylist._tail = pnode;
+        }
+        pnode->_next = pnode->_next->_next;
+        free(del);
+        del = NULL;
+    }
 }
 
 
