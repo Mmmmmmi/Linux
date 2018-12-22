@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-
+#include <unistd.h>
 //数据类型
 struct memeryNode {
     size_t _begin;
@@ -29,8 +29,8 @@ struct LinkList {
 
 //内存链表
 struct memLinkList {
-    struct LinkList _emptylist;
-    struct LinkList _usedlist;
+    struct LinkList _emptylist;     //双向循环链表
+    struct LinkList _usedlist;      //双向非循环链表
 };
 
 //创建节点
@@ -94,9 +94,6 @@ void printList(struct memLinkList *pmemlist)
     printf("已分配内存链表为：\n");
     while (cur != NULL) {
         printf("|begin:%3lu|    ", cur->_data._begin);
-        if (cur == pmemlist->_usedlist._tail) {
-            break;
-        }
         cur = cur->_next;
     }
     printf("\n");
@@ -113,9 +110,6 @@ void printList(struct memLinkList *pmemlist)
     cur = pmemlist->_usedlist._head;
     while (cur != NULL) {
         printf("|end  :%3lu|    ", cur->_data._end);
-        if (cur == pmemlist->_usedlist._tail) {
-            break;
-        }
         cur = cur->_next;
     }
     printf("\n");
@@ -200,10 +194,12 @@ void usedMemeryPush(struct memLinkList *pmemlist, struct Node * pnode)
     if (pmemlist->_usedlist._head == NULL) {   //说明已分配的为空
         pmemlist->_usedlist._head = pnode;
         pmemlist->_usedlist._tail = pnode;
+        pnode->_prev = NULL;
+        pnode->_next = NULL;
     }else {
-       pmemlist->_usedlist._tail->_next = pnode; 
        pnode->_prev = pmemlist->_usedlist._tail; 
-       pnode->_next = pmemlist->_usedlist._head;
+       pnode->_next = NULL;
+       pmemlist->_usedlist._tail->_next = pnode; 
        pmemlist->_usedlist._tail = pnode; 
     }
 }
@@ -216,17 +212,17 @@ struct Node* searchUsedMemery(struct memLinkList *pmemlist, size_t membegin)
     while (cur != NULL) {
         if (cur->_data._begin == membegin) {
             //找到了要回收的空间
+            if (pmemlist->_usedlist._head == pmemlist->_usedlist._tail) {
+                //说明只有一个节点,删除这个节点后链表为空
+                pmemlist->_usedlist._head = NULL;
+                pmemlist->_usedlist._tail = NULL;
+                break;
+            }
             if (cur->_prev == NULL) {      //找到的是第一个
                 pmemlist->_usedlist._head = cur->_next;
             }
             if (cur->_next == NULL) {      //找到的是最后一个
                 pmemlist->_usedlist._tail = cur->_prev;
-            }
-            if (cur->_next == cur && cur->_prev == cur) {
-                //说明只有一个节点,删除这个节点后链表为空
-                pmemlist->_usedlist._head = NULL;
-                pmemlist->_usedlist._tail = NULL;
-                break;
             }
             if (cur->_next != NULL) {      //当前节点的下一个的prev指向当前节点的上一个
                 cur->_next->_prev = cur->_prev;
@@ -237,11 +233,8 @@ struct Node* searchUsedMemery(struct memLinkList *pmemlist, size_t membegin)
             break;
         }
         cur = cur->_next;
-        if (cur == pmemlist->_usedlist._head) {
-            break;
-        }
     }
-    if (cur == pmemlist->_emptylist._head) {
+    if (cur == NULL) {
         printf("没有找到需要回收的内存!\n");
     }else {
         cur->_prev = NULL;
@@ -255,7 +248,7 @@ void mergeMemery(struct memLinkList *pmemlist, struct Node *pnode)
 {
     struct Node *del = NULL;
     assert(pnode != NULL);
-    if (pnode->_prev == pnode && pnode->_next == pnode) {
+    if (pmemlist->_emptylist._head == pmemlist->_emptylist._tail) {
         //只有一个节点
         return;
     }
@@ -266,14 +259,10 @@ void mergeMemery(struct memLinkList *pmemlist, struct Node *pnode)
         pnode->_prev->_next = pnode->_next;
         pnode->_prev->_data._size += pnode->_data._size;
         pnode->_prev->_data._end = pnode->_data._end;
-        if (pnode->_next != NULL) {
-            //pnode 被合并了
-            pnode->_next->_prev = pnode->_prev;
-        }
-        if (pmemlist->_emptylist._tail == pnode) {
-            //如果pnode刚好是最后一个 
-            pmemlist->_emptylist._tail = pnode->_prev;
-        }
+        //pnode 被合并了
+        pnode->_next->_prev = pnode->_prev;
+        //如果pnode刚好是最后一个 
+        pmemlist->_emptylist._tail = pnode->_prev;
         //释放掉pnode   pnode可能还能和后面的合并 所以 先保存起来 让合并后的再判断一下
         del = pnode;
         pnode = pnode->_prev;
@@ -286,9 +275,7 @@ void mergeMemery(struct memLinkList *pmemlist, struct Node *pnode)
         del = pnode->_next;
         pnode->_data._size += pnode->_next->_data._size;
         pnode->_data._end = pnode->_next->_data._end;
-        if (pnode->_next->_next != NULL) {
-            pnode->_next->_next->_prev = pnode;
-        }
+        pnode->_next->_next->_prev = pnode;
         if (pmemlist->_emptylist._tail == pnode) {
             //如果pnode的下一个刚好是最后一个节点 
             pmemlist->_emptylist._tail = pnode;
@@ -308,6 +295,8 @@ void emptyMemeryPush(struct memLinkList *pmemlist, struct Node * pnode)
     if (pmemlist->_emptylist._head == NULL) {   //说明空闲链表的为空
         pmemlist->_emptylist._head = pnode;
         pmemlist->_emptylist._tail = pnode;
+        pnode->_prev = pnode;
+        pnode->_next = pnode;
     }else {
         struct Node *cur = NULL;
         cur = pmemlist->_emptylist._head;
@@ -316,9 +305,7 @@ void emptyMemeryPush(struct memLinkList *pmemlist, struct Node * pnode)
                 //如果找到一个内存块的起始地址大于pnode的起始地址，说明pnode 在它的前面
                 pnode->_next = cur;
                 pnode->_prev = cur->_prev;
-                if (cur->_prev != NULL) {
-                    cur->_prev->_next = pnode;
-                }
+                cur->_prev->_next = pnode;
                 cur->_prev = pnode;
                 if (cur == pmemlist->_emptylist._head) {
                     //如果pnode 的begin是最小的
@@ -331,16 +318,19 @@ void emptyMemeryPush(struct memLinkList *pmemlist, struct Node * pnode)
                 break;
             }
             cur = cur->_next;
+            if (cur == pmemlist->_emptylist._head) {
+                //从头到尾找了一圈 没有找到
+                break;
+            }
         }
-        if (cur == NULL) {
+        if (cur == pmemlist->_emptylist._head) {
             //说明没有找到地址比它大的　它是最后一块
-            pmemlist->_emptylist._tail->_next = pnode;
             pnode->_prev = pmemlist->_emptylist._tail;
+            pnode->_next = pmemlist->_emptylist._tail->_next; 
+            pmemlist->_emptylist._tail->_next = pnode;
             pmemlist->_emptylist._tail = pnode;
-
             //可能有合并的情况
             mergeMemery(pmemlist, pnode);
-            
         }
     }
 }
