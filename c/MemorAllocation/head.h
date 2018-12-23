@@ -317,13 +317,13 @@ void emptyMemeryPush(struct memLinkList *pmemlist, struct Node * pnode)
 
                 break;
             }
-            cur = cur->_next;
-            if (cur == pmemlist->_emptylist._head) {
+            if (cur == pmemlist->_emptylist._tail) {
                 //从头到尾找了一圈 没有找到
                 break;
             }
+            cur = cur->_next;
         }
-        if (cur == pmemlist->_emptylist._head) {
+        if (cur == pmemlist->_emptylist._tail) {
             //说明没有找到地址比它大的　它是最后一块
             pnode->_prev = pmemlist->_emptylist._tail;
             pnode->_next = pmemlist->_emptylist._tail->_next; 

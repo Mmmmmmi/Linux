@@ -28,8 +28,8 @@ struct Node* FF(struct memLinkList *pmemlist, size_t allocatesize)
                 cur->_next->_prev = cur->_prev;
                 //当前节点的上一个的next指向当前节点的下一个
                 cur->_prev->_next = cur->_next;
-                if (pmemlist->_emptylist._head == pmemlist->_emptylist._tail) {
-                    //找完之后的头等于尾
+                if (pmemlist->_emptylist._head == pmemlist->_emptylist._tail && cur == pmemlist->_emptylist._head) {
+                    //找完之后的头等于尾 并且当前节点等于头
                     //说明空闲链表中就只有一个 并且被分配出去了
                     pmemlist->_emptylist._head = NULL;
                     pmemlist->_emptylist._tail = NULL;
@@ -80,6 +80,7 @@ struct Node* NF(struct memLinkList *pmemlist, size_t allocatesize)
         //第一次从头开始
         //后面的都操作的起点是上次操作节点的下一个
         cur = pmemlist->_emptylist._head;
+        prevemptynode = pmemlist->_emptylist._head;
     }else {
         cur = prevemptynode;
     }
@@ -90,17 +91,23 @@ struct Node* NF(struct memLinkList *pmemlist, size_t allocatesize)
             if (cur->_data._size == allocatesize) {
                 //如果相等的话，不需要创建新的
                 //直接把当前的挂在占用的内存链表的最后一个即可
-                if (cur->_prev == NULL) {      //找到的是第一个
+                if (cur == pmemlist->_emptylist._head) {      //找到的是第一个
                     pmemlist->_emptylist._head = cur->_next;
                 }
-                if (cur->_next == NULL) {      //找到的是最后一个
+                if (cur == pmemlist->_emptylist._tail) {      //找到的是最后一个
                     pmemlist->_emptylist._tail = cur->_prev;
                 }
-                if (cur->_next != NULL) {      //当前节点的下一个的prev指向当前节点的上一个
-                    cur->_next->_prev = cur->_prev;
-                }
-                if (cur->_prev != NULL) {      //当前节点的上一个的next指向当前节点的下一个
-                    cur->_prev->_next = cur->_next;
+                //当前节点的下一个的prev指向当前节点的上一个
+                cur->_next->_prev = cur->_prev;
+                //当前节点的上一个的next指向当前节点的下一个
+                cur->_prev->_next = cur->_next;
+                cur->_prev= NULL;
+                cur->_next = NULL;
+                if (pmemlist->_emptylist._head == pmemlist->_emptylist._tail && cur == pmemlist->_emptylist._head) {
+                    //找完之后的头等于尾
+                    //说明空闲链表中就只有一个 并且被分配出去了
+                    pmemlist->_emptylist._head = NULL;
+                    pmemlist->_emptylist._tail = NULL;
                 }
                 //cur指向的就是需要加到usedmemlist中去的
                 temp = cur;        
@@ -110,6 +117,8 @@ struct Node* NF(struct memLinkList *pmemlist, size_t allocatesize)
                 //分配后空闲内存的节点需要发生改变
                 cur->_data._begin = cur->_data._begin + allocatesize;
                 cur->_data._size -= allocatesize;
+                temp->_prev = NULL;
+                temp->_next = NULL;
             }
             //尾插到使用的最后一个
             usedMemeryPush(pmemlist, temp);
@@ -156,7 +165,7 @@ void allocateMemory(struct memLinkList *pmemlist, int n)
             break;
         case 2:
             //循环首次适应算法
-            prevemptynode = NF(pmemlist, allocatesize);
+            NF(pmemlist, allocatesize);
             break;
         case 3:
             //最佳适应算法
