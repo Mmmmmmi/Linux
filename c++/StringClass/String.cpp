@@ -21,7 +21,9 @@ String::String(size_t count, char ch)
     :_str(new char[count + 1])
 {
     memset(_str, ch, count);
-    _str[count] = '\0';
+    _size = count;
+    _capacity = _size;
+    _str[_size] = '\0';
 }
 
 //构造函数
@@ -29,7 +31,9 @@ String::String(String const& other, size_t pos, size_t count)
     :_str(new char[count + 1])
 {
     memcpy(_str, other._str + pos, count);
-    _str[count] = '\0';
+    _size = count;
+    _capacity = _size;
+    _str[_size] = '\0';
 }
 
 //构造函数
@@ -38,7 +42,9 @@ String::String(const char *s, size_t count)
 {
     assert(s != NULL);
     memcpy(_str, s, count);
-    _str[count] = '\0';
+    _size = count;
+    _capacity = _size;
+    _str[_size] = '\0';
 }
 
 //构造函数
@@ -46,8 +52,12 @@ String::String(Iterator first, Iterator last)
 {
     assert(first != NULL);
     assert(last != NULL);
-    _str = new char[last - first + 1];    
-    _str[last - first] = '\0';
+    assert(last >= first);
+    _size = last - first;
+    _capacity = _size;
+    _str = new char[_size + 1];    
+    memcpy(_str, first, _size);
+    _str[_size] = '\0';
 }
 
 #if 0
@@ -81,4 +91,32 @@ String::~String()
         _str = nullptr;
 
     }
+}
+
+//赋值运算符重载
+String& String::operator=(const String& s)
+{
+    if (this != &s) {
+        String temp(s._str);
+        char *c = temp._str;
+        temp._str = _str;
+        _str = c;
+        _size = s._size;
+        _capacity = s._capacity;
+    }
+    return *this;
+}
+
+//输入运算符重载
+istream& operator>>(istream& _cin, String& s)
+{
+    _cin >> s._str;
+    return _cin;
+}
+
+//输出运算符重载
+ostream& operator<<(ostream& _cout, String& s)
+{
+    _cout << s._str;
+    return _cout;
 }

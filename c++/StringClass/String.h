@@ -3,6 +3,8 @@
 #include <iostream>
 class String
 {
+    friend std::istream& operator>>(std::istream& _cin, String& s);
+    friend std::ostream& operator<<(std::ostream& _cout, String& s);
 public:
     typedef char* Iterator;
 public:
@@ -26,12 +28,18 @@ public:
     //string(std::initializer_list<charT> ilist)
     //构造函数  对象引用的引用
     //string::string(string&& str)
-    String(const String& s);        //拷贝构造函数
-    ~String();                      //析够函数
+    //拷贝构造函数
+    String(const String& s);      
+    //析够函数
+    ~String();                    
+    //赋值运算符重载
+    String& operator=(const String& s);
 
 private:
     char *_str;
+    //capacity 比真实的小1,因为要用一个来表示'\0'
     size_t _capacity;
+    //size不包括那个隐藏的'\0'
     size_t _size;
 };
 
