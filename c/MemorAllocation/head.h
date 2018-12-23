@@ -4,37 +4,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <unistd.h>
-//æ•°æ®ç±»å‹
+//Êı¾İÀàĞÍ
 struct memeryNode {
-    size_t _begin;
-    size_t _end;
-    size_t _size;
+	size_t _begin;
+	size_t _end;
+	size_t _size;
 };
 
 typedef struct memeryNode DataType;
 
-//èŠ‚ç‚¹ç»“æ„ä½“
+//½Úµã½á¹¹Ìå
 struct Node {
-    struct memeryNode _data;
-    struct Node* _next;
-    struct Node* _prev;
+	struct memeryNode _data;
+	struct Node* _next;
+	struct Node* _prev;
 };
 
-//é“¾è¡¨ç»“æ„ä½“
+//Á´±í½á¹¹Ìå
 struct LinkList {
-    struct Node* _head;
-    struct Node* _tail;
+	struct Node* _head;
+	struct Node* _tail;
 };
 
-//å†…å­˜é“¾è¡¨
+//ÄÚ´æÁ´±í
 struct memLinkList {
-    struct LinkList _emptylist;     //åŒå‘å¾ªç¯é“¾è¡¨
-    struct LinkList _usedlist;      //åŒå‘éå¾ªç¯é“¾è¡¨
+	struct LinkList _emptylist;     //Ë«ÏòÑ­»·Á´±í
+	struct LinkList _usedlist;      //Ë«Ïò·ÇÑ­»·Á´±í
 };
 
-//åˆ›å»ºèŠ‚ç‚¹
-//æ¯ä¸ªèŠ‚ç‚¹é‡Œé¢çš„æ•°æ®åŸŸåº”è¯¥æ˜¯èµ·å§‹åœ°å€å’Œå¤§å°
+//´´½¨½Úµã
+//Ã¿¸ö½ÚµãÀïÃæµÄÊı¾İÓòÓ¦¸ÃÊÇÆğÊ¼µØÖ·ºÍ´óĞ¡
 //
 // struct Node {
 //    struct memeryNode _data;
@@ -43,296 +42,391 @@ struct memLinkList {
 //};
 struct Node* creatNode(size_t begin, size_t size)
 {
-    struct Node *temp = (struct Node*) malloc (sizeof(struct Node));
-    //ç¡®ä¿malloc æˆåŠŸ
-    assert(temp != NULL);
-    temp->_data._begin = begin;
-    temp->_data._size = size;
-    temp->_data._end = begin + size - 1;
-    temp->_next = temp;
-    temp->_prev = temp;
-    return temp;
+	struct Node *temp = (struct Node*) malloc(sizeof(struct Node));
+	//È·±£malloc ³É¹¦
+	assert(temp != NULL);
+	temp->_data._begin = begin;
+	temp->_data._size = size;
+	temp->_data._end = begin + size - 1;
+	temp->_next = temp;
+	temp->_prev = temp;
+	return temp;
 }
 
-//è¾“å‡ºé“¾è¡¨
+//Êä³öÁ´±í
 void printList(struct memLinkList *pmemlist)
 {
-    assert(pmemlist != NULL);
-    struct Node *cur = NULL;
-    //è¾“å‡ºç©ºé—²é“¾è¡¨
-    cur = pmemlist->_emptylist._head;
-    printf("ç©ºé—²å†…å­˜é“¾è¡¨ä¸ºï¼š\n");
-    while (cur != NULL) {
-        printf("|begin:%3lu|    ", cur->_data._begin);
-        if (cur == pmemlist->_emptylist._tail) {
-            break;
-        }
-        cur = cur->_next;
-    }
-    printf("\n");
-    cur = pmemlist->_emptylist._head;
-    while (cur != NULL) {
-        printf("|size :%3lu|", cur->_data._size);
-        if (cur == pmemlist->_emptylist._tail) {
-            break;
-        }
-        cur = cur->_next;
-        printf("--->");
-    }
-    printf("\n");
-    cur = pmemlist->_emptylist._head;
-    while (cur != NULL) {
-        printf("|end  :%3lu|    ", cur->_data._end);
-        if (cur == pmemlist->_emptylist._tail) {
-            break;
-        }
-        cur = cur->_next;
-    }
-    printf("\n");
-    //è¾“å‡ºå·²åˆ†é…å†…å­˜é“¾è¡¨
-    cur = pmemlist->_usedlist._head;
-    printf("å·²åˆ†é…å†…å­˜é“¾è¡¨ä¸ºï¼š\n");
-    while (cur != NULL) {
-        printf("|begin:%3lu|    ", cur->_data._begin);
-        cur = cur->_next;
-    }
-    printf("\n");
-    cur = pmemlist->_usedlist._head;
-    while (cur != NULL) {
-        printf("|size :%3lu|", cur->_data._size);
-        if (cur == pmemlist->_usedlist._tail) {
-            break;
-        }
-        cur = cur->_next;
-        printf("--->");
-    }
-    printf("\n");
-    cur = pmemlist->_usedlist._head;
-    while (cur != NULL) {
-        printf("|end  :%3lu|    ", cur->_data._end);
-        cur = cur->_next;
-    }
-    printf("\n");
+	assert(pmemlist != NULL);
+	struct Node *cur = NULL;
+	//Êä³ö¿ÕÏĞÁ´±í
+	cur = pmemlist->_emptylist._head;
+	printf("¿ÕÏĞÄÚ´æÁ´±íÎª£º\n");
+	while (cur != NULL) {
+		printf("|begin:%3lu|    ", cur->_data._begin);
+		if (cur == pmemlist->_emptylist._tail) {
+			break;
+		}
+		cur = cur->_next;
+	}
+	printf("\n");
+	cur = pmemlist->_emptylist._head;
+	while (cur != NULL) {
+		printf("|size :%3lu|", cur->_data._size);
+		if (cur == pmemlist->_emptylist._tail) {
+			break;
+		}
+		cur = cur->_next;
+		printf("--->");
+	}
+	printf("\n");
+	cur = pmemlist->_emptylist._head;
+	while (cur != NULL) {
+		printf("|end  :%3lu|    ", cur->_data._end);
+		if (cur == pmemlist->_emptylist._tail) {
+			break;
+		}
+		cur = cur->_next;
+	}
+	printf("\n");
+	//Êä³öÒÑ·ÖÅäÄÚ´æÁ´±í
+	cur = pmemlist->_usedlist._head;
+	printf("ÒÑ·ÖÅäÄÚ´æÁ´±íÎª£º\n");
+	while (cur != NULL) {
+		printf("|begin:%3lu|    ", cur->_data._begin);
+		cur = cur->_next;
+	}
+	printf("\n");
+	cur = pmemlist->_usedlist._head;
+	while (cur != NULL) {
+		printf("|size :%3lu|", cur->_data._size);
+		if (cur == pmemlist->_usedlist._tail) {
+			break;
+		}
+		cur = cur->_next;
+		printf("--->");
+	}
+	printf("\n");
+	cur = pmemlist->_usedlist._head;
+	while (cur != NULL) {
+		printf("|end  :%3lu|    ", cur->_data._end);
+		cur = cur->_next;
+	}
+	printf("\n");
 }
 
-//åˆå§‹åŒ– 
-//éœ€è¦åˆå§‹åŒ–ã€€å†…å­˜çš„å¼€å§‹åœ°å€ã€€å’Œ å¤§å°
+//³õÊ¼»¯ 
+//ĞèÒª³õÊ¼»¯¡¡ÄÚ´æµÄ¿ªÊ¼µØÖ·¡¡ºÍ ´óĞ¡
 void memListInit(struct memLinkList *pmemlist, size_t begin, size_t size)
 {
-    assert(pmemlist != NULL);
-    pmemlist->_emptylist._head = NULL;
-    pmemlist->_emptylist._tail = NULL;
-    pmemlist->_usedlist._head = NULL;
-    pmemlist->_usedlist._tail = NULL;
-    //å…ˆæŠŠç¬¬ä¸€ä¸ªç©ºçš„æŒ‚åœ¨ç©ºé—²å†…å­˜é“¾è¡¨çš„ç¬¬ä¸€ä¸ª
-    struct Node *ret = creatNode(begin, size);
-    pmemlist->_emptylist._head = ret;
-    pmemlist->_emptylist._tail = ret;
+	assert(pmemlist != NULL);
+	pmemlist->_emptylist._head = NULL;
+	pmemlist->_emptylist._tail = NULL;
+	pmemlist->_usedlist._head = NULL;
+	pmemlist->_usedlist._tail = NULL;
+	//ÏÈ°ÑµÚÒ»¸ö¿ÕµÄ¹ÒÔÚ¿ÕÏĞÄÚ´æÁ´±íµÄµÚÒ»¸ö
+	struct Node *ret = creatNode(begin, size);
+	pmemlist->_emptylist._head = ret;
+	pmemlist->_emptylist._tail = ret;
 }
 
-void Swap(struct Node *pnode1, struct Node *pnode2) 
+void Swap(struct Node *pnode1, struct Node *pnode2)
 {
-    assert(pnode1 != NULL);
-    assert(pnode2 != NULL);
-    struct memeryNode temp;
-    temp = pnode1->_data;
-    pnode1->_data = pnode2->_data;
-    pnode2->_data = temp;
+	assert(pnode1 != NULL);
+	assert(pnode2 != NULL);
+	struct memeryNode temp;
+	temp = pnode1->_data;
+	pnode1->_data = pnode2->_data;
+	pnode2->_data = temp;
 }
 
-//åœ°å€å‡åºæ’åº
+//µØÖ·ÉıĞòÅÅĞò
 void sortAscAdr(struct memLinkList *pmemlist)
 {
-    assert(pmemlist != NULL); 
-    struct Node *cur = NULL;
-    if (pmemlist->_emptylist._head == NULL) {
-        return;
-    }
-    cur = pmemlist->_emptylist._head;
-    while(cur != pmemlist->_emptylist._tail) {
-        if (cur->_data._begin > cur->_next->_data._begin) {
-            Swap(cur, cur->_next);
-        }
-       cur = cur->_next; 
-    }
+	assert(pmemlist != NULL);
+	struct Node *cur = NULL;
+	if (pmemlist->_emptylist._head == NULL) {
+		return;
+	}
+	cur = pmemlist->_emptylist._head;
+	while (cur != pmemlist->_emptylist._tail) {
+		if (cur->_data._begin > cur->_next->_data._begin) {
+			Swap(cur, cur->_next);
+		}
+		cur = cur->_next;
+	}
 }
 
-//å†…å­˜å—å¤§å°å‡åº
+//ÄÚ´æ¿é´óĞ¡ÉıĞò
 void sortAscSize(struct memLinkList *pmemlist)
 {
-    assert(pmemlist != NULL);
-    struct Node *cur = NULL;
-    cur = pmemlist->_emptylist._head;
-    while(cur != pmemlist->_emptylist._tail) {
-        if (cur->_data._size > cur->_next->_data._size) {
-            Swap(cur, cur->_next);
-        }
-       cur = cur->_next; 
-    }
+	assert(pmemlist != NULL);
+	struct Node *cur = NULL;
+	cur = pmemlist->_emptylist._head;
+	while (cur != pmemlist->_emptylist._tail) {
+		if (cur->_data._size > cur->_next->_data._size) {
+			Swap(cur, cur->_next);
+		}
+		cur = cur->_next;
+	}
 }
 
 
-//å†…å­˜å—å¤§å°é™åº
+//ÄÚ´æ¿é´óĞ¡½µĞò
 void sortDescSize(struct memLinkList *pmemlist)
 {
-    assert(pmemlist != NULL);
-    struct Node *cur = NULL;
-    cur = pmemlist->_emptylist._head;
-    while(cur != pmemlist->_emptylist._tail) {
-        if (cur->_data._size < cur->_next->_data._size) {
-            Swap(cur, cur->_next);
-        }
-       cur = cur->_next; 
-    }
+	assert(pmemlist != NULL);
+	struct Node *cur = NULL;
+	cur = pmemlist->_emptylist._head;
+	while (cur != pmemlist->_emptylist._tail) {
+		if (cur->_data._size < cur->_next->_data._size) {
+			Swap(cur, cur->_next);
+		}
+		cur = cur->_next;
+	}
 }
 
-//å ç”¨ä¸­çš„å†…å­˜å—åªéœ€è¦æ·»åŠ åˆ°ä½¿ç”¨é˜Ÿåˆ—çš„æœ€åä¸€ä¸ªå°±è¡Œäº†
+//Õ¼ÓÃÖĞµÄÄÚ´æ¿éÖ»ĞèÒªÌí¼Óµ½Ê¹ÓÃ¶ÓÁĞµÄ×îºóÒ»¸ö¾ÍĞĞÁË
 void usedMemeryPush(struct memLinkList *pmemlist, struct Node * pnode)
 {
-    assert(pmemlist != NULL);
-    assert(pnode != NULL);
-    if (pmemlist->_usedlist._head == NULL) {   //è¯´æ˜å·²åˆ†é…çš„ä¸ºç©º
-        pmemlist->_usedlist._head = pnode;
-        pmemlist->_usedlist._tail = pnode;
-        pnode->_prev = NULL;
-        pnode->_next = NULL;
-    }else {
-       pnode->_prev = pmemlist->_usedlist._tail; 
-       pnode->_next = NULL;
-       pmemlist->_usedlist._tail->_next = pnode; 
-       pmemlist->_usedlist._tail = pnode; 
-    }
+	assert(pmemlist != NULL);
+	assert(pnode != NULL);
+	if (pmemlist->_usedlist._head == NULL) {   //ËµÃ÷ÒÑ·ÖÅäµÄÎª¿Õ
+		pmemlist->_usedlist._head = pnode;
+		pmemlist->_usedlist._tail = pnode;
+		pnode->_prev = NULL;
+		pnode->_next = NULL;
+	}
+	else {
+		pnode->_prev = pmemlist->_usedlist._tail;
+		pnode->_next = NULL;
+		pmemlist->_usedlist._tail->_next = pnode;
+		pmemlist->_usedlist._tail = pnode;
+	}
 }
 
 struct Node* searchUsedMemery(struct memLinkList *pmemlist, size_t membegin)
-{   
-    struct Node *cur = NULL;
-    assert(pmemlist != NULL);
-    cur = pmemlist->_usedlist._head;
-    while (cur != NULL) {
-        if (cur->_data._begin == membegin) {
-            //æ‰¾åˆ°äº†è¦å›æ”¶çš„ç©ºé—´
-            if (pmemlist->_usedlist._head == pmemlist->_usedlist._tail) {
-                //è¯´æ˜åªæœ‰ä¸€ä¸ªèŠ‚ç‚¹,åˆ é™¤è¿™ä¸ªèŠ‚ç‚¹åé“¾è¡¨ä¸ºç©º
-                pmemlist->_usedlist._head = NULL;
-                pmemlist->_usedlist._tail = NULL;
-                break;
-            }
-            if (cur->_prev == NULL) {      //æ‰¾åˆ°çš„æ˜¯ç¬¬ä¸€ä¸ª
-                pmemlist->_usedlist._head = cur->_next;
-            }
-            if (cur->_next == NULL) {      //æ‰¾åˆ°çš„æ˜¯æœ€åä¸€ä¸ª
-                pmemlist->_usedlist._tail = cur->_prev;
-            }
-            if (cur->_next != NULL) {      //å½“å‰èŠ‚ç‚¹çš„ä¸‹ä¸€ä¸ªçš„prevæŒ‡å‘å½“å‰èŠ‚ç‚¹çš„ä¸Šä¸€ä¸ª
-                cur->_next->_prev = cur->_prev;
-            }
-            if (cur->_prev != NULL) {      //å½“å‰èŠ‚ç‚¹çš„ä¸Šä¸€ä¸ªçš„nextæŒ‡å‘å½“å‰èŠ‚ç‚¹çš„ä¸‹ä¸€ä¸ª
-                cur->_prev->_next = cur->_next;
-            }
-            break;
-        }
-        cur = cur->_next;
-    }
-    if (cur == NULL) {
-        printf("æ²¡æœ‰æ‰¾åˆ°éœ€è¦å›æ”¶çš„å†…å­˜!\n");
-    }else {
-        cur->_prev = NULL;
-        cur->_next = NULL;
-    }
-    return cur;
+{
+	struct Node *cur = NULL;
+	assert(pmemlist != NULL);
+	cur = pmemlist->_usedlist._head;
+	while (cur != NULL) {
+		if (cur->_data._begin == membegin) {
+			//ÕÒµ½ÁËÒª»ØÊÕµÄ¿Õ¼ä
+			if (pmemlist->_usedlist._head == pmemlist->_usedlist._tail) {
+				//ËµÃ÷Ö»ÓĞÒ»¸ö½Úµã,É¾³ıÕâ¸ö½ÚµãºóÁ´±íÎª¿Õ
+				pmemlist->_usedlist._head = NULL;
+				pmemlist->_usedlist._tail = NULL;
+				break;
+			}
+			if (cur->_prev == NULL) {      //ÕÒµ½µÄÊÇµÚÒ»¸ö
+				pmemlist->_usedlist._head = cur->_next;
+			}
+			if (cur->_next == NULL) {      //ÕÒµ½µÄÊÇ×îºóÒ»¸ö
+				pmemlist->_usedlist._tail = cur->_prev;
+			}
+			if (cur->_next != NULL) {      //µ±Ç°½ÚµãµÄÏÂÒ»¸öµÄprevÖ¸Ïòµ±Ç°½ÚµãµÄÉÏÒ»¸ö
+				cur->_next->_prev = cur->_prev;
+			}
+			if (cur->_prev != NULL) {      //µ±Ç°½ÚµãµÄÉÏÒ»¸öµÄnextÖ¸Ïòµ±Ç°½ÚµãµÄÏÂÒ»¸ö
+				cur->_prev->_next = cur->_next;
+			}
+			break;
+		}
+		cur = cur->_next;
+	}
+	if (cur == NULL) {
+		printf("Ã»ÓĞÕÒµ½ĞèÒª»ØÊÕµÄÄÚ´æ!\n");
+	}
+	else {
+		cur->_prev = NULL;
+		cur->_next = NULL;
+	}
+	return cur;
 }
 
-//å¯èƒ½æœ‰åˆå¹¶çš„æƒ…å†µ
+//¿ÉÄÜÓĞºÏ²¢µÄÇé¿ö
 void mergeMemery(struct memLinkList *pmemlist, struct Node *pnode)
 {
-    struct Node *del = NULL;
-    assert(pnode != NULL);
-    if (pmemlist->_emptylist._head == pmemlist->_emptylist._tail) {
-        //åªæœ‰ä¸€ä¸ªèŠ‚ç‚¹
-        return;
-    }
-    //å› ä¸ºæ’å…¥çš„æ—¶å€™æ˜¯æŒ‰åœ°å€æ’å…¥çš„  æ‰€ä»¥å®ƒçš„åœ°å€è‚¯å®šæ˜¯å‡åºçš„
-    //å¦‚æœå¯ä»¥åˆå¹¶ï¼Œé‚£ä¹ˆè‚¯å®šæ˜¯ä¸¤ä¸ªè¿ç»­çš„
-    if (pnode->_prev->_data._end + 1 == pnode->_data._begin) {
-        //ä¸¤ä¸ªæ˜¯å¯ä»¥åˆå¹¶çš„
-        pnode->_prev->_next = pnode->_next;
-        pnode->_prev->_data._size += pnode->_data._size;
-        pnode->_prev->_data._end = pnode->_data._end;
-        //pnode è¢«åˆå¹¶äº†
-        pnode->_next->_prev = pnode->_prev;
-        //å¦‚æœpnodeåˆšå¥½æ˜¯æœ€åä¸€ä¸ª 
-        pmemlist->_emptylist._tail = pnode->_prev;
-        //é‡Šæ”¾æ‰pnode   pnodeå¯èƒ½è¿˜èƒ½å’Œåé¢çš„åˆå¹¶ æ‰€ä»¥ å…ˆä¿å­˜èµ·æ¥ è®©åˆå¹¶åçš„å†åˆ¤æ–­ä¸€ä¸‹
-        del = pnode;
-        pnode = pnode->_prev;
-        free(del);
-        del = NULL;
-    }
-    if (pnode->_data._end + 1 == pnode->_next->_data._begin) {
-        //ä¸¤ä¸ªæ˜¯å¯ä»¥åˆå¹¶çš„
-        //è¿™é‡Œè¦åˆ é™¤çš„æ˜¯pnodeçš„ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
-        del = pnode->_next;
-        pnode->_data._size += pnode->_next->_data._size;
-        pnode->_data._end = pnode->_next->_data._end;
-        pnode->_next->_next->_prev = pnode;
-        if (pmemlist->_emptylist._tail == pnode) {
-            //å¦‚æœpnodeçš„ä¸‹ä¸€ä¸ªåˆšå¥½æ˜¯æœ€åä¸€ä¸ªèŠ‚ç‚¹ 
-            pmemlist->_emptylist._tail = pnode;
-        }
-        pnode->_next = pnode->_next->_next;
-        free(del);
-        del = NULL;
-    }
+	struct Node *del = NULL;
+	assert(pnode != NULL);
+	if (pmemlist->_emptylist._head == pmemlist->_emptylist._tail) {
+		//Ö»ÓĞÒ»¸ö½Úµã
+		return;
+	}
+	//ÒòÎª²åÈëµÄÊ±ºòÊÇ°´µØÖ·²åÈëµÄ  ËùÒÔËüµÄµØÖ·¿Ï¶¨ÊÇÉıĞòµÄ
+	//Èç¹û¿ÉÒÔºÏ²¢£¬ÄÇÃ´¿Ï¶¨ÊÇÁ½¸öÁ¬ĞøµÄ
+	if (pnode->_prev->_data._end + 1 == pnode->_data._begin) {
+		//Á½¸öÊÇ¿ÉÒÔºÏ²¢µÄ  ²¢ÇÒºÏ²¢µ½pnode->prevÉÏÈ¥
+		//pnode->prev¿ÉÄÜÎªhead pnodeÒ²¿ÉÄÜÎª tail
+		//
+		pnode->_prev->_next = pnode->_next;
+		pnode->_prev->_data._size += pnode->_data._size;
+		pnode->_prev->_data._end = pnode->_data._end;
+		//pnode ±»ºÏ²¢ÁË
+
+		pnode->_next->_prev = pnode->_prev;
+		//Èç¹ûpnode¸ÕºÃÊÇ×îºóÒ»¸ö
+		if (pnode == pmemlist->_emptylist._tail) {
+			pmemlist->_emptylist._tail = pnode->_prev;
+		}
+		//ÊÍ·Åµôpnode   pnode¿ÉÄÜ»¹ÄÜºÍºóÃæµÄºÏ²¢ ËùÒÔ ÏÈ±£´æÆğÀ´ ÈÃºÏ²¢ºóµÄÔÙÅĞ¶ÏÒ»ÏÂ
+		del = pnode;
+		pnode = pnode->_prev;
+		free(del);
+		del = NULL;
+	}
+	if (pnode->_data._end + 1 == pnode->_next->_data._begin) {
+		//Á½¸öÊÇ¿ÉÒÔºÏ²¢µÄ
+		//ÕâÀïÒªÉ¾³ıµÄÊÇpnodeµÄÏÂÒ»¸ö½Úµã
+		del = pnode->_next;
+		pnode->_data._size += pnode->_next->_data._size;
+		pnode->_data._end = pnode->_next->_data._end;
+
+		pnode->_next->_next->_prev = pnode;
+		
+		if (pmemlist->_emptylist._tail == pnode->_next) {
+			//Èç¹ûpnodeµÄÏÂÒ»¸ö¸ÕºÃÊÇ×îºóÒ»¸ö½Úµã 
+			pmemlist->_emptylist._tail = pnode;
+		}
+
+		pnode->_next = pnode->_next->_next;
+		free(del);
+		del = NULL;
+	}
 }
 
 
-//å›æ”¶çš„å†…å­˜å—åªéœ€è¦æ·»åŠ åˆ°ç¬¬ä¸€ä¸ªæ¯”ä»–åœ°å€é«˜çš„å‰é¢å°±å¥½
+//»ØÊÕµÄÄÚ´æ¿éÖ»ĞèÒªÌí¼Óµ½µÚÒ»¸ö±ÈËûµØÖ·¸ßµÄÇ°Ãæ¾ÍºÃ
 void emptyMemeryPush(struct memLinkList *pmemlist, struct Node * pnode)
 {
-    assert(pmemlist != NULL);
-    assert(pnode != NULL);
-    if (pmemlist->_emptylist._head == NULL) {   //è¯´æ˜ç©ºé—²é“¾è¡¨çš„ä¸ºç©º
-        pmemlist->_emptylist._head = pnode;
-        pmemlist->_emptylist._tail = pnode;
-        pnode->_prev = pnode;
-        pnode->_next = pnode;
-    }else {
-        struct Node *cur = NULL;
-        cur = pmemlist->_emptylist._head;
-        while(cur != NULL) {
-            if (cur->_data._begin > pnode->_data._begin) {
-                //å¦‚æœæ‰¾åˆ°ä¸€ä¸ªå†…å­˜å—çš„èµ·å§‹åœ°å€å¤§äºpnodeçš„èµ·å§‹åœ°å€ï¼Œè¯´æ˜pnode åœ¨å®ƒçš„å‰é¢
-                pnode->_next = cur;
-                pnode->_prev = cur->_prev;
-                cur->_prev->_next = pnode;
-                cur->_prev = pnode;
-                if (cur == pmemlist->_emptylist._head) {
-                    //å¦‚æœpnode çš„beginæ˜¯æœ€å°çš„
-                    pmemlist->_emptylist._head = pnode;
-                }
+	assert(pmemlist != NULL);
+	assert(pnode != NULL);
+	if (pmemlist->_emptylist._head == NULL) {   //ËµÃ÷¿ÕÏĞÁ´±íµÄÎª¿Õ
+		pmemlist->_emptylist._head = pnode;
+		pmemlist->_emptylist._tail = pnode;
+		pnode->_prev = pnode;
+		pnode->_next = pnode;
+	}
+	else {
+		struct Node *cur = NULL;
+		cur = pmemlist->_emptylist._head;
+		while (cur != NULL) {
+			if (cur->_data._begin > pnode->_data._begin) {
+				//Èç¹ûÕÒµ½Ò»¸öÄÚ´æ¿éµÄÆğÊ¼µØÖ·´óÓÚpnodeµÄÆğÊ¼µØÖ·£¬ËµÃ÷pnode ÔÚËüµÄÇ°Ãæ
+				pnode->_next = cur;
+				pnode->_prev = cur->_prev;
+				cur->_prev->_next = pnode;
+				cur->_prev = pnode;
+				if (cur == pmemlist->_emptylist._head) {
+					//Èç¹ûpnode µÄbeginÊÇ×îĞ¡µÄ
+					pmemlist->_emptylist._head = pnode;
+				}
 
-                //å¯èƒ½æœ‰åˆå¹¶çš„æƒ…å†µ
-                mergeMemery(pmemlist, pnode);
+				//¿ÉÄÜÓĞºÏ²¢µÄÇé¿ö
+				mergeMemery(pmemlist, pnode);
 
-                break;
-            }
-            if (cur == pmemlist->_emptylist._tail) {
-                //ä»å¤´åˆ°å°¾æ‰¾äº†ä¸€åœˆ æ²¡æœ‰æ‰¾åˆ°
-                break;
-            }
-            cur = cur->_next;
-        }
-        if (cur == pmemlist->_emptylist._tail) {
-            //è¯´æ˜æ²¡æœ‰æ‰¾åˆ°åœ°å€æ¯”å®ƒå¤§çš„ã€€å®ƒæ˜¯æœ€åä¸€å—
-            pnode->_prev = pmemlist->_emptylist._tail;
-            pnode->_next = pmemlist->_emptylist._tail->_next; 
-            pmemlist->_emptylist._tail->_next = pnode;
-            pmemlist->_emptylist._tail = pnode;
-            //å¯èƒ½æœ‰åˆå¹¶çš„æƒ…å†µ
-            mergeMemery(pmemlist, pnode);
-        }
-    }
+				break;
+			}
+			cur = cur->_next;
+			if (cur == pmemlist->_emptylist._head) {
+				//´ÓÍ·µ½Î²ÕÒÁËÒ»È¦ Ã»ÓĞÕÒµ½
+				break;
+			}
+		}
+		if (cur == pmemlist->_emptylist._head) {
+			//ËµÃ÷Ã»ÓĞÕÒµ½µØÖ·±ÈËü´óµÄ¡¡ËüÊÇ×îºóÒ»¿é
+			pnode->_prev = pmemlist->_emptylist._tail;
+			pnode->_next = pmemlist->_emptylist._tail->_next;
+			pmemlist->_emptylist._tail->_next = pnode;
+			pmemlist->_emptylist._tail = pnode;
+			//¿ÉÄÜÓĞºÏ²¢µÄÇé¿ö
+			mergeMemery(pmemlist, pnode);
+		}
+	}
+}
+
+struct Node *prevemptynode = NULL;
+//¶¨ÒåÒ»¸öÖ¸ÏòÉÏÒ»´Î²Ù×÷µÄ½Úµã¡¡ÔÚÑ­»·Ê×´ÎÊÊÓ¦ÀïÃæ»áÓÃµ½
+//Èç¹ûÁ¬ĞøÁ½´Î¶¼Ñ¡ÔñÑ­»·Ê×´ÎÊÊÓ¦Ëã·¨£¬ÄÇÃ´µÚ¶ş´ÎµÄÊÊÓ¦Ëã·¨²éÕÒµÄÆğµãÊÇÉÏÒ»´ÎµÄÏÂÒ»¸ö¡¡
+void searchEmptyMemery(struct memLinkList *pmemlist, size_t allocatesize, int isloop)
+{
+	struct Node *cur = NULL;
+	struct Node *temp = NULL;
+	assert(pmemlist != NULL);
+	if (allocatesize == 0) {
+		return;
+	}
+	if (isloop) {
+		if (prevemptynode == NULL) {
+			//Ñ­»·ÊÊÓ¦Ëã·¨
+			//µÚÒ»´Î´ÓÍ·¿ªÊ¼
+			//ºóÃæµÄ¶¼²Ù×÷µÄÆğµãÊÇÉÏ´Î²Ù×÷½ÚµãµÄÏÂÒ»¸ö
+			cur = pmemlist->_emptylist._head;
+			prevemptynode = pmemlist->_emptylist._head;
+		}
+		else {
+			cur = prevemptynode;
+		}
+	}
+	else {
+		cur = pmemlist->_emptylist._head;
+	}
+	while (cur != NULL) {
+			if (cur->_data._size >= allocatesize) {
+				//ÕÒµ½ÁËĞèÒª·ÖÅäµÄ¿Õ¼ä 
+				prevemptynode = cur->_next;
+				if (cur->_data._size == allocatesize) {
+					//Èç¹ûÏàµÈµÄ»°£¬²»ĞèÒª´´½¨ĞÂµÄ
+					//Ö±½Ó°Ñµ±Ç°µÄ¹ÒÔÚÕ¼ÓÃµÄÄÚ´æÁ´±íµÄ×îºóÒ»¸ö¼´¿É
+					if (cur == pmemlist->_emptylist._head) {      //ÕÒµ½µÄÊÇµÚÒ»¸ö
+						pmemlist->_emptylist._head = cur->_next;
+					}
+					if (cur == pmemlist->_emptylist._tail) {      //ÕÒµ½µÄÊÇ×îºóÒ»¸ö
+						pmemlist->_emptylist._tail = cur->_prev;
+					}
+					//µ±Ç°½ÚµãµÄÏÂÒ»¸öµÄprevÖ¸Ïòµ±Ç°½ÚµãµÄÉÏÒ»¸ö
+					cur->_next->_prev = cur->_prev;
+					//µ±Ç°½ÚµãµÄÉÏÒ»¸öµÄnextÖ¸Ïòµ±Ç°½ÚµãµÄÏÂÒ»¸ö
+					cur->_prev->_next = cur->_next;
+					cur->_prev = NULL;
+					cur->_next = NULL;
+					if (pmemlist->_emptylist._head == pmemlist->_emptylist._tail && cur == pmemlist->_emptylist._head) {
+						//ÕÒÍêÖ®ºóµÄÍ·µÈÓÚÎ²
+						//ËµÃ÷¿ÕÏĞÁ´±íÖĞ¾ÍÖ»ÓĞÒ»¸ö ²¢ÇÒ±»·ÖÅä³öÈ¥ÁË
+						pmemlist->_emptylist._head = NULL;
+						pmemlist->_emptylist._tail = NULL;
+						//Á´±íÎª¿ÕÒÔºó£¬prevemptynodeÒ²¾ÍÎª¿ÕÁË
+						prevemptynode = NULL;
+					}
+					//curÖ¸ÏòµÄ¾ÍÊÇĞèÒª¼Óµ½usedmemlistÖĞÈ¥µÄ
+					temp = cur;
+				}
+				else {
+					//ÕÒµ½µÄµÚÒ»¸ö´óÓÚĞèÒªµÄ£¬ĞèÒª´ÓÖĞ·ÖÅäÒ»¶Î¿Õ¼ä 
+					temp = creatNode(cur->_data._begin, allocatesize);
+					//·ÖÅäºó¿ÕÏĞÄÚ´æµÄ½ÚµãĞèÒª·¢Éú¸Ä±ä
+					cur->_data._begin = cur->_data._begin + allocatesize;
+					cur->_data._size -= allocatesize;
+					temp->_prev = NULL;
+					temp->_next = NULL;
+				}
+				//Î²²åµ½Ê¹ÓÃµÄ×îºóÒ»¸ö
+				usedMemeryPush(pmemlist, temp);
+				break;
+			}
+			cur = cur->_next;
+			if (isloop == 1 && cur == prevemptynode) {
+				//ÄÜ×ßµ½Õâ£¬¾ÍËµÃ÷
+				//ÕÒÁËÒ»È¦ Ã»ÕÒµ½
+				break;
+			}
+			if (isloop == 0 && cur == pmemlist->_emptylist._head) {
+				break;
+			}
+	}
+	if (temp == NULL) {
+		printf("Ã»ÓĞ¿É·ÖÅäµÄÄÚ´æ!\n");
+	}
 }
 
 #endif
