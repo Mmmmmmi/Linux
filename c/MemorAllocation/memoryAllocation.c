@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 
-//Ê×´ÎÊÊÓ¦Ëã·¨
+//é¦–æ¬¡é€‚åº”ç®—æ³•
 void FF(struct memLinkList *pmemlist, size_t allocatesize)
 {
 	assert(pmemlist != NULL);
@@ -14,7 +14,7 @@ void FF(struct memLinkList *pmemlist, size_t allocatesize)
 	searchEmptyMemery(pmemlist, allocatesize, 0);
 }
 
-//×î¼ÑÊÊÓ¦Ëã·¨
+//æœ€ä½³é€‚åº”ç®—æ³•
 void BF(struct memLinkList *pmemlist, size_t allocatesize)
 {
 	assert(pmemlist != NULL);
@@ -25,7 +25,7 @@ void BF(struct memLinkList *pmemlist, size_t allocatesize)
 	searchEmptyMemery(pmemlist, allocatesize, 0);
 }
 
-//×î»µÊÊÓ¦Ëã·¨
+//æœ€åé€‚åº”ç®—æ³•
 void WF(struct memLinkList *pmemlist, size_t allocatesize)
 {
 	assert(pmemlist != NULL);
@@ -38,12 +38,12 @@ void WF(struct memLinkList *pmemlist, size_t allocatesize)
 
 
 
-//Ñ­»·Ê×´ÎÊÊÓ¦Ëã·¨
+//å¾ªç¯é¦–æ¬¡é€‚åº”ç®—æ³•
 void NF(struct memLinkList *pmemlist, size_t allocatesize)
 {
 	assert(pmemlist != NULL);
 	if (allocatesize == 0) {
-		//Èç¹ûĞèÒª·ÖÅäµÄ¿Õ¼äÎª0 Ö±½Ó·µ»Ø
+		//å¦‚æœéœ€è¦åˆ†é…çš„ç©ºé—´ä¸º0 ç›´æ¥è¿”å›
 		return;
 	}
 	sortAscAdr(pmemlist);
@@ -55,27 +55,27 @@ void NF(struct memLinkList *pmemlist, size_t allocatesize)
 void allocateMemory(struct memLinkList *pmemlist, int n)
 {
 	size_t allocatesize = 0;
-	printf("ÇëÊäÈëÒª·ÖÅäµÄÄÚ´æ´óĞ¡:");
+	printf("è¯·è¾“å…¥è¦åˆ†é…çš„å†…å­˜å¤§å°:");
 	scanf("%lu", &allocatesize);
 	switch (n) {
 	case 1:
-		//Ê×´ÎÊÊÓ¦Ëã·¨
+		//é¦–æ¬¡é€‚åº”ç®—æ³•
 		FF(pmemlist, allocatesize);
 		break;
 	case 2:
-		//Ñ­»·Ê×´ÎÊÊÓ¦Ëã·¨
+		//å¾ªç¯é¦–æ¬¡é€‚åº”ç®—æ³•
 		NF(pmemlist, allocatesize);
 		break;
 	case 3:
-		//×î¼ÑÊÊÓ¦Ëã·¨
+		//æœ€ä½³é€‚åº”ç®—æ³•
 		BF(pmemlist, allocatesize);
 		break;
 	case 4:
-		//×î»µÊÊÓ¦Ëã·¨
+		//æœ€åé€‚åº”ç®—æ³•
 		WF(pmemlist, allocatesize);
 		break;
 	default:
-		printf("ÊäÈë´íÎó£¡\n");
+		printf("è¾“å…¥é”™è¯¯ï¼\n");
 		break;
 	}
 }
@@ -84,18 +84,18 @@ void recoveryMemory(struct memLinkList *pmemlist)
 {
 	assert(pmemlist != NULL);
 	size_t membegin = 0;
-	printf("ÇëÊäÈëÒª»ØÊÕµÄÄÚ´æµÄÆğÊ¼µØÖ·:");
+	printf("è¯·è¾“å…¥è¦å›æ”¶çš„å†…å­˜çš„èµ·å§‹åœ°å€:");
 	scanf("%lu", &membegin);
-	//ÖªµÀÆğÊ¼µØÖ·ÒÔºó£¬ÔÚÒÑ·ÖÅäÄÚ´æÁ´±íÖĞ²éÕÒ£¬ÕÒµ½ºó£¬½«ÆäÈ¡³öÀ´£¬
-	//È»ºó½«¿ÕÏĞÁ´±í°´µØÖ·ÉıĞòÅÅĞò£¬ÅÅĞòºó½«Òª»ØÊÕµÄ²åÈëÁ´±íÖĞ£¬
-	//½øĞĞ¿ÉÄÜµÄºÏ²¢
+	//çŸ¥é“èµ·å§‹åœ°å€ä»¥åï¼Œåœ¨å·²åˆ†é…å†…å­˜é“¾è¡¨ä¸­æŸ¥æ‰¾ï¼Œæ‰¾åˆ°åï¼Œå°†å…¶å–å‡ºæ¥ï¼Œ
+	//ç„¶åå°†ç©ºé—²é“¾è¡¨æŒ‰åœ°å€å‡åºæ’åºï¼Œæ’åºåå°†è¦å›æ”¶çš„æ’å…¥é“¾è¡¨ä¸­ï¼Œ
+	//è¿›è¡Œå¯èƒ½çš„åˆå¹¶
 	struct Node *ret = searchUsedMemery(pmemlist, membegin);
-	//ÔÚÒÑ·ÖÅäÁ´±íÖĞÕÒµ½Òª»ØÊÕµÄ    
+	//åœ¨å·²åˆ†é…é“¾è¡¨ä¸­æ‰¾åˆ°è¦å›æ”¶çš„    
 	if (ret == NULL) {
 		return;
 	}
-	sortAscAdr(pmemlist);   //°´µØÖ·ÅÅĞò
-	emptyMemeryPush(pmemlist, ret);  //²åÈë¡¡£« ºÏ²¢
+	sortAscAdr(pmemlist);   //æŒ‰åœ°å€æ’åº
+	emptyMemeryPush(pmemlist, ret);  //æ’å…¥ã€€ï¼‹ åˆå¹¶
 }
 
 
@@ -112,13 +112,13 @@ int main()
 	printf("please input memery szie : ");
 	scanf("%lu", &memsize);
 	memListInit(&memlist, membegin, memsize);
-	printf("ÇëÊäÈëÑ¡Ïî");
-	printf("1.Ê×´ÎÊÊÓ¦Ëã·¨  2.Ñ­»·Ê×´ÎÊÊÓ¦Ëã·¨  3.×î¼ÑÊÊÓ¦Ëã·¨  4.×î»µÊÊÓ¦Ëã·¨ :");
-	scanf("%d", &n);       //Ã»ÓĞ½øĞĞÊäÈë´íÎó´¦Àí£¬Ö±½Óµ±ÊäÈëµÄÕıÈ·
+	printf("è¯·è¾“å…¥é€‰é¡¹");
+	printf("1.é¦–æ¬¡é€‚åº”ç®—æ³•  2.å¾ªç¯é¦–æ¬¡é€‚åº”ç®—æ³•  3.æœ€ä½³é€‚åº”ç®—æ³•  4.æœ€åé€‚åº”ç®—æ³• :");
+	scanf("%d", &n);       //æ²¡æœ‰è¿›è¡Œè¾“å…¥é”™è¯¯å¤„ç†ï¼Œç›´æ¥å½“è¾“å…¥çš„æ­£ç¡®
 	while (1) {
 		printList(&memlist);
-		printf("ÇëÑ¡Ôñ¹¦ÄÜ: ");
-		printf("1.·ÖÅä¿Õ¼ä    2.»ØÊÕ¿Õ¼ä   3.ÍË³ö: ");
+		printf("è¯·é€‰æ‹©åŠŸèƒ½: ");
+		printf("1.åˆ†é…ç©ºé—´    2.å›æ”¶ç©ºé—´   3.é€€å‡º: ");
 		scanf("%d", &i);
 		switch (i) {
 		case 1:
@@ -128,10 +128,10 @@ int main()
 			recoveryMemory(&memlist);
 			break;
 		case 3:
-			printf("³ÌĞòÍË³ö£¡\n");
+			printf("ç¨‹åºé€€å‡ºï¼\n");
 			return 0;
 		default:
-			printf("Ñ¡ÏîÊäÈëÓĞÎó£¬ÇëÖØĞÂÊäÈë£¡\n");
+			printf("é€‰é¡¹è¾“å…¥æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼\n");
 			break;
 		}
 	}

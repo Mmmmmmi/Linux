@@ -8,6 +8,7 @@ class String
 public:
     typedef char* Iterator;
 public:
+
     //构造函数  用c字符串或者空指针或者无参构造
     //string::string()
     //string::string(charT const* s)
@@ -22,8 +23,9 @@ public:
     //string::string(charT const* s, size_type count)
     String(const char *s, size_t count);   
     //构造函数  用一段序列
-    //string::string(InputIt first, InputIt last)
-    String(Iterator first, Iterator last);
+    //template <class InputIterator>
+    //string::string(InputIterator first, InputIterator last)
+    String(const Iterator first, const Iterator last);
     //构造函数  用参数列表
     //string(std::initializer_list<charT> ilist)
     //构造函数  对象引用的引用
@@ -34,6 +36,31 @@ public:
     ~String();                    
     //赋值运算符重载
     String& operator=(const String& s);
+
+
+    //Iterators:
+    Iterator begin();
+    Iterator end();
+    Iterator cbegin() const;
+    Iterator cend() const;
+    Iterator rbegin();
+    Iterator rend();
+    Iterator crbegin() const;
+    Iterator crend() const;
+
+
+    //Capacity:
+    size_t size() const;
+    size_t length() const;
+    size_t max_size() const;
+    void resize(size_t n);
+    void resize(size_t n, char c);
+    size_t capacity() const;
+    void reserve(size_t n = 0);
+    void clear();
+    bool empty() const;
+
+
 
 private:
     char *_str;

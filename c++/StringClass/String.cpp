@@ -48,7 +48,7 @@ String::String(const char *s, size_t count)
 }
 
 //构造函数
-String::String(Iterator first, Iterator last)
+String::String(const Iterator first, const Iterator last)
 {
     assert(first != NULL);
     assert(last != NULL);
