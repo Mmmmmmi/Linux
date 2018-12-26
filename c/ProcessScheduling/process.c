@@ -29,7 +29,7 @@ void FCFS(Queue *pqueue, PCB pcbs[], int size)
 		}
         //
         //显示时间
-		printf("time is %d \n", time);
+//		printf("time is %d \n", time);
 
 		//执行进程
         if (!QueueEmpty(pqueue) && QueueTop(pqueue)->data.ResidualTime == 0) {
@@ -76,7 +76,7 @@ void RR(Queue *pqueue, PCB pcbs[], int size)
 			printf("进程执行完毕！\n");
 			break;
 		}
-		printf("time is %d \n", time);
+//		printf("time is %d \n", time);
         //
         //
 		//执行进程
@@ -140,7 +140,7 @@ void SPF(linkList *plinklist, PCB pcbs[], int size)
 			printf("进程执行完毕！\n");
 			break;
 		}
-		printf("time is %d \n", time);
+	//	printf("time is %d \n", time);
         //
 		//执行进程
         //
@@ -199,7 +199,7 @@ void PSA(linkList *plinklist, PCB pcbs[], int size)
 			printf("进程执行完毕！\n");
 			break;
 		}
-		printf("time is %d \n", time);
+//		printf("time is %d \n", time);
         //
 		//执行进程
         //
@@ -258,7 +258,7 @@ void DPSA(linkList *plinklist, PCB pcbs[], int size)
 			printf("进程执行完毕！\n");
 			break;
 		}
-		printf("\n\ntime is %d \n", time);
+//		printf("\n\ntime is %d \n", time);
         //
 		//执行进程
         //

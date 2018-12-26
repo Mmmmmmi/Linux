@@ -7,9 +7,8 @@ U8GLIB_SSD1306_128X64 u8g(U8G_I2C_OPT_NONE);//The definition OLED connection
 float tempOLED, humiOLED;
 
 #define INTERVAL_OLED 1000
-
-
 LM75 sensor(LM75_ADDRESS | 0b000);
+
 
 
 unsigned long time0;
@@ -105,6 +104,11 @@ unsigned long pulse(unsigned long _t) {       //_t 表示按压时间
 
 
 
+
+
+
+
+
 // the setup routine runs once when you press reset:
 void setup() {
   // initialize serial communication at 9600 bits per second:
@@ -115,6 +119,7 @@ void setup() {
   Wire.begin();
 
 }
+
 
 
 
@@ -131,9 +136,9 @@ void getSensorData()
   if (timeflag > 5000 && timeflag < 6000) {
     nowtime = millis();
     temperature = sensor.temp();
-    //Serial.print("Current temp: ");
-    //Serial.print(temperature);
-    //Serial.println(" C");
+    Serial.print("Current temp: ");
+    Serial.print(temperature);
+    Serial.println(" C");
   }
 
 }
@@ -234,6 +239,9 @@ void loop() {
   //    Serial.print("t0:");
   // Serial.print(digitalRead(A0) * 2000);
   // Serial.println();
+//  if(pulse.available() && pulse.getInterval() > 10000){  
+//    heartrate = pulse.getPulse();
+//  }
 
 
   long presstime = getTime0();   //按压时间
@@ -249,6 +257,11 @@ void loop() {
       }
     }
   }
+
+
+
+
+
 
   //
   getSensorData();

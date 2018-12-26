@@ -120,3 +120,22 @@ ostream& operator<<(ostream& _cout, String& s)
     _cout << s._str;
     return _cout;
 }
+
+//begin
+String::Iterator String::begin()
+{
+    return _str;
+}
+
+//end
+String::Iterator String::end()
+{
+    return _str + this->_size;
+}
+
+//cbegin
+String::Iterator String::cbegin() const
+{
+   return _str;
+}
+
