@@ -16,8 +16,6 @@
 
 
 
-
-
 //int num = 0;
 // 
 //void setup()
@@ -30,15 +28,10 @@
 //  while(Serial.available())
 //   {
 //     char c=Serial.read();
-//      if(c=='A')
-//        {
 //          num++;
 //          Serial.print("Hello:num=");
 //          Serial.println(num);
-//        }
-//        else {
 //          Serial.println(c);
-//        }
 //   }
 //}
 
