@@ -6,11 +6,11 @@
 #include <istream>
 using namespace std;
 //进程对象
-class press
+class Press
 {
 public:
-    press() {}
-    ~press() {}
+    Press() {}
+    ~Press() {}
 private:
     vector<vector<int>> _max;           //最大需求
     vector<vector<int>> _allocation;    //已分配的    
@@ -19,13 +19,28 @@ private:
 };
 
 //系统中的资源对象
-class resources
+class Resources
 {
 public:
-    resources() {}
-    ~resources() {}
+    Resources() {}
+    ~Resources() {}
 private:
+    vector<vector<int>> _sum;           //各类资源总数
     vector<vector<int>> _available;     //可利用的资源数目
 };
+
+//解决方案
+class Solution
+{
+public:
+private:
+    vector<Press> _press;           //用来存储进程
+    vector<Resources> _resoures;    //用来存储资源
+};
+
+
+
+
+
 
 #endif
