@@ -30,13 +30,20 @@ void test()
     int resourcesnum;
     Solution s;
     //输入进程数
-    cout << "请输入进程数：";
-    cin >> processnum;
-    cout << "请输入资源类型数 ：";
-    cin >> resourcesnum;
-    s.initialize(processnum, resourcesnum);
-    s.setProcess();
-    s.setResources();
+    while(1) {
+        cout << "请输入进程数：";
+        cin >> processnum;
+        cout << "请输入资源类型数 ：";
+        cin >> resourcesnum;
+        s.initialize(processnum, resourcesnum);
+        s.setProcess();
+        s.setResources();
+        if (s.checkValidity()) {
+            break;
+        }else {
+            cout << "信息输入不正确，请重新输入!" << endl;
+        }
+    }
     //银行家算法的循环
     while(1) {
         cout << "1. 请求分配资源   2. 输出进程及资源信息   3. 退出" << endl;

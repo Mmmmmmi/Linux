@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <iostream>
+#include <assert.h>
 using namespace std;
 
 
@@ -49,6 +50,27 @@ public:
             _need[i] = _max[i] - _allocation[i];
         }
 
+    }
+
+    //返回第ｎ个资源的max
+    int getNMax(int n)
+    {
+        assert(n < _max.size());
+        return _max[n];
+    }
+
+    //返回第ｎ个资源的allocation
+    int getNallocation(int n)
+    {
+        assert(n < _allocation.size());
+        return _allocation[n];
+    }
+
+    //返回第ｎ个资源的allocation
+    int getNneed(int n)
+    {
+        assert(n < _need.size());
+        return _need[n];
     }
 
     //输出本进程的信息
@@ -132,7 +154,7 @@ public:
     //输出资源值
     void printValue()
     {
-        cout << _sum << "        " << _available;
+        cout << _sum << "        " << _available << endl;
     }
 
     //析够函数
@@ -218,19 +240,38 @@ public:
         }
     }
 
-    //检测输入的有效性
+    //检测输入的有效性  只在第一次输入的时候检测
     //即  进程的 max = need + allocation
     //    资源的 sum = available + allocation
-    void checkValidity()
+    bool checkValidity()
     {
-        for (auto e : _process) {
-        
-        }
-         
 
+        //检测进程信息合法性
+        for (int i = 0; i < _processnum; ++i) {
+            for (int j = 0; j < _resourcesnum; ++j) {
+                if (_process[i].getNMax(j) < _process[i].getNallocation(j)) {
+                    return false;
+                } 
+            }
+        }
+
+        //检测资源合法性
+        for (int j = 0; j < _resourcesnum; ++j) {
+            int sum = 0;
+            for (int i = 0; i < _processnum; ++i) {
+                sum += _process[i].getNallocation(j);
+            }
+          //  cout << "sum == " << sum <<endl;
+          //  cout << "_resources[j].getAvailable() == " << _resources[j].getAvailable() <<endl;
+            if (sum + _resources[j].getAvailable() != _resources[j].getSum()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
-
+    //输出当前信息
     void printInfo()
     {
         //输出进程信息
