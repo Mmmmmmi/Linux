@@ -53,28 +53,35 @@ public:
     }
 
     //返回第ｎ个资源的max
-    int getNMax(int n)
+    int getNMax(int n) const
     {
         assert(n < _max.size());
         return _max[n];
     }
 
     //返回第ｎ个资源的allocation
-    int getNallocation(int n)
+    int getNallocation(int n) const
     {
         assert(n < _allocation.size());
         return _allocation[n];
     }
 
     //返回第ｎ个资源的allocation
-    int getNneed(int n)
+    int getNneed(int n) const
     {
         assert(n < _need.size());
         return _need[n];
     }
+    
+    //进程完成
+    void finishProcess()
+    {
+        
+    }
+
 
     //输出本进程的信息
-    void printValue()
+    void printValue() const
     {
         //max
         for (auto e : _max) {
@@ -140,19 +147,19 @@ public:
     }
         
     //获取资源总数
-    int getSum()
+    int getSum() const
     {
         return _sum;
     }
 
     //获取资源总数
-    int getAvailable()
+    int getAvailable()  const
     {
         return _available;
     }
 
     //输出资源值
-    void printValue()
+    void printValue() const
     {
         cout << _sum << "        " << _available << endl;
     }
@@ -243,7 +250,7 @@ public:
     //检测输入的有效性  只在第一次输入的时候检测
     //即  进程的 max = need + allocation
     //    资源的 sum = available + allocation
-    bool checkValidity()
+    bool checkValidity() const
     {
 
         //检测进程信息合法性
@@ -272,7 +279,7 @@ public:
     }
 
     //输出当前信息
-    void printInfo()
+    void printInfo() const
     {
         //输出进程信息
         cout << "process:" << endl;
@@ -286,6 +293,24 @@ public:
         for (auto e : _resources) {
             e.printValue();
         }
+    }
+
+
+    void checkSecurity()
+    {
+
+    }
+
+
+
+
+    //试分配资源
+    void allocationResources()
+    {
+        int i = 0;
+        cout << "请输入进程序号：" << endl;
+        cin >> i;
+        
     }
 
 private:
