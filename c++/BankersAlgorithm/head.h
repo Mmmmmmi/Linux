@@ -73,6 +73,18 @@ public:
         return _need[n];
     }
     
+    //获取状态
+    bool getState() const
+    {
+        return _state;
+    }
+
+    //修改状态
+    void setState(bool state)
+    {
+        _state = state;
+    }
+
     //进程完成
     void finishProcess()
     {
@@ -117,6 +129,7 @@ private:
     vector<int> _allocation;    //已分配的    
     vector<int> _need;          //尚需要的
  //   vector<int> _request;       //本次请求的   
+    bool _state;                //进程状态
 };
 
 //系统中的资源对象
@@ -257,6 +270,7 @@ public:
         for (int i = 0; i < _processnum; ++i) {
             for (int j = 0; j < _resourcesnum; ++j) {
                 if (_process[i].getNMax(j) < _process[i].getNallocation(j)) {
+                    cout << "false for _processValidity" << endl;
                     return false;
                 } 
             }
@@ -271,6 +285,7 @@ public:
           //  cout << "sum == " << sum <<endl;
           //  cout << "_resources[j].getAvailable() == " << _resources[j].getAvailable() <<endl;
             if (sum + _resources[j].getAvailable() != _resources[j].getSum()) {
+                cout << "false for _resourcesValidity" << endl;
                 return false;
             }
         }
@@ -296,6 +311,7 @@ public:
     }
 
 
+    //安全性检测
     void checkSecurity()
     {
 
@@ -305,12 +321,66 @@ public:
 
 
     //试分配资源
+    //先输入进程号　    如果没有错误　　　再输入ｒｅｑｕｅｓ
+    //
     void allocationResources()
     {
         int i = 0;
-        cout << "请输入进程序号：" << endl;
-        cin >> i;
+        //选择进程
+        while(1) {
+            cout << "请输入进程序号：" << endl;
+            cin >> i;
+            if (i >= 0 && i < _processnum) {
+                break;
+            }
+        }
+
+        //输入request
+        vector<int> request;
+        //request 的大小和_resourcesnum
+        request.resize(_resourcesnum);
+
+        //接收到了request的信息
+        for (auto& e: request) {
+           cin >> e;  
+        }
         
+        //判断
+        // 4 中情况
+        
+        // 输入的 大于 need    输入非法
+        for (int j = 0; j < _resourcesnum; ++j) {
+            if (request[j] > _process[i].getNneed(i)) {
+                cout << "输入有误，request > need" << endl;
+                //从这里直接跳出，重新进行下一次
+                return;
+            }             
+        }
+
+        // 输入的 大于 available  不能满足
+        for (int j = 0; j < _resourcesnum; ++j) {
+            if (request[j] > _resources[j].getAvailable()) {
+                cout << "资源不足，无法分配，request > available" << endl;
+                //从这里直接跳出，重新进行下一次
+                return;
+            }             
+        }
+
+        //走到这里，就能进行试分配了
+        //输入的正常  不能通过安全性检测算法  不安全
+        //试分配
+        //先不用修改process的信息
+        //如果分配可以成功，再来修改process的值，这样就可以省去一步了
+        
+
+
+
+
+
+
+
+        // 输入的正常  能通过安全性检测算法  安全
+
     }
 
 private:

@@ -50,7 +50,7 @@ void test()
         cout << "请选择功能：";
         cin >> a;
         switch(a) {
-        case 1:
+        case 1:s.allocationResources();
         case 2:s.printInfo();break;
         case 3:cout << "程序退出成功!"<< endl;return;
         default:cout << "输入有误，请重新输入!" << endl;break;
