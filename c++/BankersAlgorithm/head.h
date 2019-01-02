@@ -33,7 +33,7 @@ public:
     //输入一开始的各进程的资源情况 // 
     void setValue()
     {
-        //max
+         //max
         cout << "请输入_max：";
         for (auto& e : _max) {
             cin >> e;
@@ -49,7 +49,6 @@ public:
         for (size_t i = 0; i < _max.size(); ++i) {
             _need[i] = _max[i] - _allocation[i];
         }
-
     }
 
     //返回第ｎ个资源的max
@@ -85,31 +84,50 @@ public:
         _state = state;
     }
 
-    //进程完成
-    void finishProcess()
+    //试分配
+    void doRequest(vector<int>& request)
     {
-        
+        //如果能满足条件，即request进行分配
+        //need = need - request
+        //allocation = allocation + request
+        for (size_t i = 0; i < request.size(); ++i)
+        {
+            _need[i] -= request[i]; 
+            _allocation[i] += request[i];
+        }
     }
 
+    //撤销试分配
+    void undoRequest(vector<int>& request)
+    {
+        //如果能满足条件，即request进行分配
+        //need = need - request
+        //allocation = allocation + request
+        for (size_t i = 0; i < request.size(); ++i)
+        {
+            _need[i] += request[i]; 
+            _allocation[i] -= request[i];
+        }
+    }
 
     //输出本进程的信息
     void printValue() const
     {
         //max
         for (auto e : _max) {
-            cout << e << " ";
+            printf("%2d ", e);
         }
 
         //allocation
         cout << "     ";
         for (auto e : _allocation) {
-            cout << e << " ";
+            printf("%2d ", e);
         }
 
         //need
         cout << "     ";
         for (auto e : _need) {
-            cout << e << " ";
+            printf("%2d  ", e);
         }
         cout << endl;
     }
@@ -124,7 +142,7 @@ public:
         _need.shrink_to_fit();
       //_request.clear();
     }
-private:
+//private:
     vector<int> _max;           //最大需求
     vector<int> _allocation;    //已分配的    
     vector<int> _need;          //尚需要的
@@ -159,6 +177,19 @@ public:
         cin >> _available;
     }
         
+    //试分配
+    void doRequest(int request)
+    {
+        _available -= request;
+    }
+
+    
+    //撤销试分配
+    void undoRequest(int request)
+    {
+        _available += request;
+    }
+
     //获取资源总数
     int getSum() const
     {
@@ -174,7 +205,7 @@ public:
     //输出资源值
     void printValue() const
     {
-        cout << _sum << "        " << _available << endl;
+        printf("%2d       %2d\n", _sum, _available);
     }
 
     //析够函数
@@ -184,7 +215,7 @@ public:
         _available = 0;
     }
 
-private:
+//private:
     int _sum;           //资源总数
     int _available;     //可利用的资源数目
 };
@@ -219,7 +250,77 @@ public:
         _process.shrink_to_fit();
         _resources.clear();
         _resources.shrink_to_fit();
+        _work.clear();
+        _work.shrink_to_fit();
     }
+
+
+    void test()
+    {
+        _process[0]._max[0] = 7;
+        _process[0]._max[1] = 5;
+        _process[0]._max[2] = 3;
+        _process[0]._allocation[0] = 0;
+        _process[0]._allocation[1] = 1;
+        _process[0]._allocation[2] = 0;
+        _process[0]._need[0] = 7;
+        _process[0]._need[1] = 4;
+        _process[0]._need[2] = 3;
+
+
+        _process[1]._max[0] = 3;
+        _process[1]._max[1] = 2;
+        _process[1]._max[2] = 2;
+        _process[1]._allocation[0] = 2;
+        _process[1]._allocation[1] = 0;
+        _process[1]._allocation[2] = 0;
+        _process[1]._need[0] = 1;
+        _process[1]._need[1] = 2;
+        _process[1]._need[2] = 2;
+
+        _process[2]._max[0] = 9;
+        _process[2]._max[1] = 0;
+        _process[2]._max[2] = 2;
+        _process[2]._allocation[0] = 3;
+        _process[2]._allocation[1] = 0;
+        _process[2]._allocation[2] = 2;
+        _process[2]._need[0] = 6;
+        _process[2]._need[1] = 0;
+        _process[2]._need[2] = 0;
+
+        _process[3]._max[0] = 2;
+        _process[3]._max[1] = 2;
+        _process[3]._max[2] = 2;
+        _process[3]._allocation[0] = 2;
+        _process[3]._allocation[1] = 1;
+        _process[3]._allocation[2] = 1;
+        _process[3]._need[0] = 0;
+        _process[3]._need[1] = 1;
+        _process[3]._need[2] = 1;
+
+        _process[4]._max[0] = 4;
+        _process[4]._max[1] = 3;
+        _process[4]._max[2] = 3;
+        _process[4]._allocation[0] = 0;
+        _process[4]._allocation[1] = 0;
+        _process[4]._allocation[2] = 2;
+        _process[4]._need[0] = 4;
+        _process[4]._need[1] = 3;
+        _process[4]._need[2] = 1;
+
+        _resources[0]._sum = 10;
+        _resources[0]._available = 3;
+
+
+        _resources[1]._sum = 5;
+        _resources[1]._available = 3;
+
+
+        _resources[2]._sum = 7;
+        _resources[2]._available = 2;
+
+    }
+
 
 
     //初始化各变量
@@ -231,10 +332,13 @@ public:
         //提前预留空间
         _process.resize(processnum);
         _resources.resize(resourcesnum);
+        _work.resize(resourcesnum);
+        //初始化进程信息
         for(int i = 0; i < processnum; ++i) {
             //为每一个进程将资源列表大小初始化好
             _process[i].initValue(resourcesnum);
         }
+        //初始化资源信息
         for(int i = 0; i < resourcesnum; ++i) {
             //为每一个进程将资源列表大小初始化好
             _resources[i].initValue(resourcesnum);
@@ -298,26 +402,130 @@ public:
     {
         //输出进程信息
         cout << "process:" << endl;
-        cout << "max" << "          " << "allocation" << endl;
+        printf("max          allocation           need\n");
         for (auto e : _process) {
             e.printValue();
         }
         //输出资源信息
         cout << "resources:" << endl;
-        cout << "sum" << "          " << "available" << endl;
+        printf("sum    _available\n");
         for (auto e : _resources) {
             e.printValue();
+        }
+
+        
+       /* printf("work\n");
+        for (auto e : _work) {
+            cout << e << endl;
+        }*/
+
+    }
+
+    //试分配  修改值
+    void tryFinishRequest()
+    {
+        _process[_processid].doRequest(_request);
+        for (int i = 0; i < _resourcesnum; ++i) {
+           _resources[i].doRequest(_request[i]); 
+        }
+    }
+
+    //获取所有进程的状态，如果有进程状态为false，那么就为false，如果所有进程都为true，那么就为true
+    bool getProcessState() const
+    {
+        for (auto e : _process) {
+            if (e.getState() == false) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //搜索可以完成的进程  找到返回进程号， 找不到返回-1 
+    int searchProcess() const
+    {
+        for (int i = 0; i < _processnum; ++i) {
+            if (_process[i].getState() == false) {      // 进程为未完成状态 
+                //接下来要判断的是 进程所需的资源小于work中的资源
+                size_t flag = 0; 
+                for (int j = 0; j < _resourcesnum; ++j) {
+                   // cout << "i == " << i << "   j == " << j  << endl;
+                   // cout << "_process[i].getNneed(j) == " << _process[i].getNneed(j) << "   _work[j] == " << _work[j] << endl;
+                    if (_process[i].getNneed(j) > _work[j]) {
+                        break;
+                    }else {
+                        flag++;
+                    }
+                }    
+               // cout << "flag == " <<flag << endl;
+                //走到这里来有两个结果：1.满足条件  2. 有的资源不满足条件 break出
+                if (flag == _work.size()) {
+                  //  cout << "返回了" << endl;
+                    //flag == _work.size()  说明 每个条件都比较过了  并且都满足了
+                    return i;
+                }
+            }
+        }
+        cout << "false for searchProcess() !" << endl;
+        return -1;
+    }
+    
+    void checkFinish()
+    {
+        for (int i = 0; i < _processnum; ++i) {
+            int flag = 0;
+            for (int j = 0; j < _resourcesnum; ++j) {
+                if (_process[i].getNneed(j) != 0) {
+                    break;
+                }else {
+                    flag++;
+                }
+            }
+            if (flag == _resourcesnum) {
+               _process.erase(_process.begin() + i);   
+               _processnum -= 1;
+               cout << "进程" << i << "完成，从队列中删除" << endl;
+            }
         }
     }
 
 
     //安全性检测
-    void checkSecurity()
+    bool checkSecurity()
     {
+        
+        //设置work
+        for (int j = 0; j < _resourcesnum; ++j) {
+            _work[j] = _resources[j].getAvailable();
+        }
+        
+        //先设置所有进程为false状态
+        for (auto& e : _process) {
+            e.setState(false);
+        }
 
+        //当有进程未完成时，返回false
+        while(!getProcessState()) {
+            //既然有未完成的进程，就从其中找到一个可以完成的去完成
+            int retprocessid = searchProcess(); 
+            if (retprocessid == -1) {
+                //有进程未完成，但是根据当前的资源情况，无法完成，状态不安全
+                cout << "false for checkSecurity() !" << endl;
+                return false;
+            }
+            //找到了一个进程
+            //说明这条进程可以执行 将它输出 
+            cout << "进程Ｉｄ　＝＝　" << retprocessid << endl;
+            //进程的状态为完成
+            _process[retprocessid].setState(true);
+            //执行完之后work发生变化
+            for (int i = 0; i < _resourcesnum; ++i) {
+                _work[i] += _process[retprocessid].getNallocation(i);
+            }
+        }
+        //能走出来 说明都完成了
+        return true;
     }
-
-
 
 
     //试分配资源
@@ -325,23 +533,21 @@ public:
     //
     void allocationResources()
     {
-        int i = 0;
         //选择进程
         while(1) {
-            cout << "请输入进程序号：" << endl;
-            cin >> i;
-            if (i >= 0 && i < _processnum) {
+            cout << "请输入进程序号：";
+            cin >> _processid;
+            if (_processid >= 0 && _processid < _processnum) {
                 break;
             }
         }
 
-        //输入request
-        vector<int> request;
         //request 的大小和_resourcesnum
-        request.resize(_resourcesnum);
+        _request.resize(_resourcesnum);
 
+        cout << "请输入请求向量：";
         //接收到了request的信息
-        for (auto& e: request) {
+        for (auto& e: _request) {
            cin >> e;  
         }
         
@@ -350,7 +556,7 @@ public:
         
         // 输入的 大于 need    输入非法
         for (int j = 0; j < _resourcesnum; ++j) {
-            if (request[j] > _process[i].getNneed(i)) {
+            if (_request[j] > _process[_processid].getNneed(j)) {
                 cout << "输入有误，request > need" << endl;
                 //从这里直接跳出，重新进行下一次
                 return;
@@ -359,7 +565,7 @@ public:
 
         // 输入的 大于 available  不能满足
         for (int j = 0; j < _resourcesnum; ++j) {
-            if (request[j] > _resources[j].getAvailable()) {
+            if (_request[j] > _resources[j].getAvailable()) {
                 cout << "资源不足，无法分配，request > available" << endl;
                 //从这里直接跳出，重新进行下一次
                 return;
@@ -368,26 +574,42 @@ public:
 
         //走到这里，就能进行试分配了
         //输入的正常  不能通过安全性检测算法  不安全
-        //试分配
-        //先不用修改process的信息
-        //如果分配可以成功，再来修改process的值，这样就可以省去一步了
+        //输入的正常  能通过安全性检测算法  安全
         
+        //试分配
+        //tryFinishRequest(); 
+        _process[_processid].doRequest(_request);
+        for (int i = 0; i < _resourcesnum; ++i) {
+            _resources[i].doRequest(_request[i]); 
+        }
 
-
-
-
-
-
-
-        // 输入的正常  能通过安全性检测算法  安全
-
+   /*     //设置work----------------放到安全性检测算法内部了
+        for (int j = 0; j < _resourcesnum; ++j) {
+            _work[j] = _resources[j].getAvailable();
+        }*/
+        
+        //work中 是执行过试分配的available的值
+        //安全性检测
+        if (!checkSecurity()) {
+            _process[_processid].undoRequest(_request);
+            for (int i = 0; i < _resourcesnum; ++i) {
+                _resources[i].undoRequest(_request[i]); 
+            }
+            cout << "分配后状态不安全，不执行分配！" << endl;
+        }else {
+            cout << "分配后状态安全，已执行分配！" << endl;
+            checkFinish();
+        }
     }
 
 private:
-    int _processnum;                   //进程数
+    int _processnum;                    //进程数
     vector<Process> _process;           //用来存储进程
-    int _resourcesnum;                //资源类型数
-    vector<Resources> _resources;    //用来存储资源
+    int _resourcesnum;                  //资源类型数
+    vector<Resources> _resources;       //用来存储资源
+    int _processid;                      //发出request的进程id
+    vector<int> _work;                  //工作状态资源数
+    vector<int> _request;               //会接收到的请求
 };
 
 

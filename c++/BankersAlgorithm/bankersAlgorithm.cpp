@@ -38,10 +38,20 @@ void test()
         s.initialize(processnum, resourcesnum);
         s.setProcess();
         s.setResources();
-        if (s.checkValidity()) {
+      //  s.test();
+        cout << "数据合法性检测中～～～" << endl;
+        if (s.checkValidity()) {     //确保输入数据的正确
+            cout << "数据合法!" << endl;    //下面要进行安全性检测　所以不能ｂｒｅａｋ
+        }else {
+            cout << "数据不合法，请重新输入!" << endl;
+            continue;
+        }
+        cout << "当前状态安全性检测中～～～" << endl;
+        if (s.checkSecurity()) {     //确保状态安全 
+            cout << "当前状态安全!" << endl;
             break;
         }else {
-            cout << "信息输入不正确，请重新输入!" << endl;
+            cout << "当前状态不安全，请重新输入!" << endl;
         }
     }
     //银行家算法的循环
