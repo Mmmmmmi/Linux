@@ -35,6 +35,11 @@ int main()
             char *argv[32] = {0};
             int argc = 0;
 
+            //解析 是否含有管道
+            int pipeflag = 0;   //标记是否有管道
+
+
+
             //解析 判断是否有重定向命令
             int flag = 0;         //标记是否有重定向
             char *filename = NULL;
@@ -65,7 +70,9 @@ int main()
                 dup2(fd, 1);            
             } 
             flag = 0;
-            //解析命令
+            
+            
+            //解析正常命令
             cur = cmd;
             while(*cur != '\0') {
                 if (!isspace(*cur)){
