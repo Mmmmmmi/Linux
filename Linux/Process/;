@@ -20,6 +20,7 @@ int main()
 
         //接收命令
         char cmd[1024] = {0};
+        char *pipecmd = NULL;   //用来保存管道命令
         fflush(stdout);
         printf("MiniShell:");
         
@@ -41,7 +42,7 @@ int main()
 
             char *pipeargv[32] = {0};
             int pipeargc = 0;
-            char *pipecmd = NULL;   //用来保存管道命令
+            pipecmd = NULL:
             //解析 是否含有管道 如果有管道 那么 就把总命令分离
             cur = cmd;
             while (*cur != '\0') {
@@ -91,10 +92,10 @@ int main()
                 dup2(fd, 1);            
             } 
             flag = 0;
+            
 
 
-
-
+            
             //解析正常命令
             char *argv[32] = {0};
             int argc = 0;
@@ -110,25 +111,14 @@ int main()
                 }
                 cur++;
             }
-
-
-            //如果有管道的话，应该把输出流重定向为管道
-            //然后把第二个的输入流重定向为管道
-            if (pipecmd != NULL) {
-                int pipefd[2] = {-1}; 
-                int piperet = pipe(pipefd);
-                if (piperet == -1) {
-                    perror("error for pipe");
-                    return -1;
-                }
-                
-            }       
-             
-
             execvp(argv[0], argv);
             exit(0);
         }
 
+        //如果有管道的话，应该把输出流重定向为管道，然后把第二个的输入流重定向为管道
+        if (pipecmd != NULL) {
+
+        }       
         //父进程, wait 即可
         wait(NULL);                    
     }
