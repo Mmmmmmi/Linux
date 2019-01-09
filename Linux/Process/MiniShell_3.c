@@ -57,6 +57,7 @@ int main()
                         pipecmd = cur;  //pipecmd 中保存的是管道的命令
                     }
                 }
+                cur++;
             }
 
 
@@ -90,9 +91,6 @@ int main()
                 int fd = open(filename, O_WRONLY|O_CREAT|O_APPEND, 0664);
                 dup2(fd, 1);            
             } 
-            flag = 0;
-
-
 
 
             //解析正常命令
@@ -112,6 +110,7 @@ int main()
             }
 
 
+            //printf("pipecmd == %p\n", pipecmd);
             //如果有管道的话，应该把输出流重定向为管道
             //然后把第二个的输入流重定向为管道
             if (pipecmd != NULL) {
@@ -121,12 +120,21 @@ int main()
                     perror("error for pipe");
                     return -1;
                 }
-                
+                //输出重定向到管道中
+                dup2(pipefd[1],1);
+                //把第一个命令的输出重定向为管道
+                execvp(argv[0], argv);
+                //把第二个命令的输入重定向为管道，再把输出换回去
+                dup2(pipefd[0], 0);
+            }else {
+                execvp(argv[0], argv);
             }       
-             
 
-            execvp(argv[0], argv);
+
+
             exit(0);
+
+            
         }
 
         //父进程, wait 即可
