@@ -8,7 +8,7 @@
 #include <string>
 using namespace std;
 
-class Base
+struct Base
 {
 public:
     int _pubb;
@@ -18,14 +18,14 @@ private:
     int _prib;
 };
 
-class Derive : private Base
+struct Derived :  Base
 {
 public:
     void test() 
     {
         _pubb = 1;
         _prob = 2;
-        _prib = 3;
+  //      _prib = 3;
     }
 public:
     int _pubd;
@@ -35,16 +35,11 @@ private:
     int _prid;
 };
 
-
-
-
-
 int main()
 {
-    Derive derive;
-    derive._pubb = 1;
-    derive._prob = 2;
-    derive._prib = 3; 
+    Base b;
+    Derived derived;
+    derived._pubb = 1;
     return 0;
 }
 
