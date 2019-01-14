@@ -28,25 +28,28 @@ int main()
     */
     struct sockaddr_in service_addr;
     service_addr.sin_family = AF_INET;
-   // service_addr.sin_addr.s_addr = inet_addr("10.0.6.118");
-    service_addr.sin_addr.s_addr = inet_addr("172.16.58.243");
     service_addr.sin_port = htons(7777);
+    //service_addr.sin_addr.s_addr = inet_addr("10.0.5.226");
+    service_addr.sin_addr.s_addr = inet_addr("119.23.248.167");
     socklen_t len = sizeof(service_addr);
     while(1) {
         //3. 发送信息
         char buff[1024] = {0};
         printf("You want to say:");
         scanf("%s", buff);
+        printf("send start\n");
         int sendret = sendto(socketfd, buff, strlen(buff), 0, (struct sockaddr*)&service_addr, len);
         if (sendret == -1) {
             perror("error for sendto");
             return -1;
         }
-    //    printf("send end\n");
+        printf("send end\n");
         //4. 接收信息
         memset(buff, 0, 1024);
+        printf("recvfrom start\n");
         recvfrom(socketfd, buff, 1023, 0, (struct sockaddr*)&service_addr, &len);
         printf("Service say: %s\n", buff);
+        printf("recvfrom start\n");
     }
 
     //5. 关闭套接字

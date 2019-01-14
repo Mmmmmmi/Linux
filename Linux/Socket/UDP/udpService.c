@@ -27,7 +27,7 @@ int main()
     struct sockaddr_in addr;
     addr.sin_family = AF_INET;      //协议簇
     addr.sin_port = htons(7777);
-    addr.sin_addr.s_addr = inet_addr("10.0.6.118");
+    addr.sin_addr.s_addr = inet_addr("10.0.5.226");
     socklen_t len = sizeof(struct sockaddr_in);
     int ret;
     ret = bind(socketfd, (struct sockaddr*) &addr, len);
@@ -48,7 +48,9 @@ int main()
         //  返回值：实际接收的数据长度      失败：-1
         char buff[1024] = {0};
         struct sockaddr_in client_addr;
+        printf("recvfrom start\n");
         recvfrom(socketfd, buff, 1023, 0, (struct sockaddr*) &client_addr, &len);
+        printf("recvfrom end\n");
         printf("client say: %s\n", buff);
         //4. 回信息
         memset(buff, 0, 1024);
@@ -58,7 +60,9 @@ int main()
         //  int flags,struct sockaddr *dest_addr, socklen_t addrlen);
         //  dest_addr:  目的端地址信息
         //  addrlen：   地址信息长度
+        printf("send start\n");
         sendto(socketfd, buff, strlen(buff), 0, (struct sockaddr*) &client_addr, len);
+        printf("send end\n");
     }
     //5. 关闭套接字
     close(socketfd);
