@@ -10,12 +10,19 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/socket.h>
+
+
+#define CHECK_RET(i) if((i) == false) {return -1;} 
+
 class TcpSocket
 {
 public:
+
+    //构造函数
     TcpSocket()
         :_socketfd(-1)
     {}
+
     bool creatSocket()  //创建套接字
     {
         //创建套接字

@@ -34,21 +34,21 @@ int main()
     socklen_t len = sizeof(service_addr);
     while(1) {
         //3. 发送信息
-        char buff[1024] = {0};
+        char buf[1024] = {0};
         printf("You want to say:");
-        scanf("%s", buff);
+        scanf("%s", buf);
         printf("send start\n");
-        int sendret = sendto(socketfd, buff, strlen(buff), 0, (struct sockaddr*)&service_addr, len);
+        int sendret = sendto(socketfd, buf, strlen(buf), 0, (struct sockaddr*)&service_addr, len);
         if (sendret == -1) {
             perror("error for sendto");
             return -1;
         }
         printf("send end\n");
         //4. 接收信息
-        memset(buff, 0, 1024);
+        memset(buf, 0, 1024);
         printf("recvfrom start\n");
-        recvfrom(socketfd, buff, 1023, 0, (struct sockaddr*)&service_addr, &len);
-        printf("Service say: %s\n", buff);
+        recvfrom(socketfd, buf, 1023, 0, (struct sockaddr*)&service_addr, &len);
+        printf("Service say: %s\n", buf);
         printf("recvfrom start\n");
     }
 
